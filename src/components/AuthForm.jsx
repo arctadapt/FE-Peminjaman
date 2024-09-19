@@ -7,52 +7,19 @@ const AuthForm = ({ isLogin, onSubmit }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
   
+  // Only for register form
   const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');
 
   const navigate = useNavigate();
 
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Email is invalid';
-    }
-    
-    if (!password) {
-      newErrors.password = 'Password is required';
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-
-    if (!isLogin) {
-      if (!username) {
-        newErrors.username = 'Username is required';
-      }
-
-      if (!phone) {
-        newErrors.phone = 'Phone number is required';
-      } else if (!/^[0-9]+$/.test(phone)) {
-        newErrors.phone = 'Phone number is invalid';
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      if (isLogin) {
-        onSubmit(email, password);
-      } else {
-        onSubmit(username, phone, email, password);  
-      }
+    if (isLogin) {
+      onSubmit(email, password);
+    } else {
+      onSubmit(username, phone, email, password);  // Include additional fields for register
     }
   };
 
@@ -74,9 +41,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
                   type="text" 
                   value={username} 
                   onChange={(e) => setUsername(e.target.value)} 
+                  required={!isLogin} 
                 />
                 <i><FaUser /></i>
-                {errors.username && <span className={styles.error}>{errors.username}</span>}
               </div>
               <div className={styles.inputGroup}>
                 <label>Phone Number</label>
@@ -84,9 +51,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
                   type="tel" 
                   value={phone} 
                   onChange={(e) => setPhone(e.target.value)} 
+                  required={!isLogin} 
                 />
                 <i><FaPhone /></i>
-                {errors.phone && <span className={styles.error}>{errors.phone}</span>}
               </div>
             </>
           )}
@@ -97,9 +64,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
               type="email" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
+              required 
             />
             <i><FaEnvelope /></i>
-            {errors.email && <span className={styles.error}>{errors.email}</span>}
           </div>
 
           <div className={styles.inputGroup}>
@@ -108,11 +75,11 @@ const AuthForm = ({ isLogin, onSubmit }) => {
               type={showPassword ? 'text' : 'password'} 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
+              required 
             />
             <i onClick={togglePasswordVisibility}>
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </i>
-            {errors.password && <span className={styles.error}>{errors.password}</span>}
           </div>
 
           <button type="submit">{isLogin ? 'Login' : 'Register'}</button>

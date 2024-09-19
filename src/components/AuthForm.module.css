@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden; /* Prevents scrolling */
+    overflow: hidden;
   }
 
   .container {
@@ -14,7 +14,7 @@
     background: linear-gradient(135deg, #08cafa, #2b2b2b);
     background-size: cover;
     position: relative;
-    overflow: hidden; /* Prevents overflow from the container itself */
+    overflow: hidden;
   }
 
   .formBox {
@@ -45,12 +45,7 @@
     letter-spacing: 1px;
   }
   
-  .error {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-    display: block;
-  }
+
   
   .inputGroup {
     margin-bottom: 20px;
