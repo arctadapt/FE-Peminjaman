@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaLock, FaUser, FaPhone, FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import { FaLock, FaUser, FaPhone, FaEye, FaEyeSlash, FaRegBuilding } from 'react-icons/fa'; 
 import styles from './AuthForm.module.css';
 
 const AuthForm = ({ isLogin, onSubmit }) => {
-  const [email, setEmail] = useState('');
+  const [kelas, setKelas] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   
@@ -17,9 +17,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
-      onSubmit(email, password);
+      onSubmit(phone, password);
     } else {
-      onSubmit(username, phone, email, password);  // Include additional fields for register
+      onSubmit(username, phone, kelas, password);  // Include additional fields for register
     }
   };
 
@@ -36,7 +36,7 @@ const AuthForm = ({ isLogin, onSubmit }) => {
           {!isLogin && (
             <>
               <div className={styles.inputGroup}>
-                <label>Username</label>
+                <label>Nama Lengkap</label>
                 <input 
                   type="text" 
                   value={username} 
@@ -46,27 +46,27 @@ const AuthForm = ({ isLogin, onSubmit }) => {
                 <i><FaUser /></i>
               </div>
               <div className={styles.inputGroup}>
-                <label>Phone Number</label>
+                <label>Kelas</label>
                 <input 
-                  type="tel" 
-                  value={phone} 
-                  onChange={(e) => setPhone(e.target.value)} 
+                  type="text" 
+                  value={kelas} 
+                  onChange={(e) => setKelas(e.target.value)} 
                   required={!isLogin} 
                 />
-                <i><FaPhone /></i>
+                <i><FaRegBuilding /></i>
               </div>
             </>
           )}
 
           <div className={styles.inputGroup}>
-            <label>Email</label>
+            <label>No Telepon</label>
             <input 
-              type="email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
+              type="tel" 
+              value={phone} 
+              onChange={(e) => setPhone(e.target.value)} 
               required 
             />
-            <i><FaEnvelope /></i>
+            <i><FaPhone /></i>
           </div>
 
           <div className={styles.inputGroup}>
