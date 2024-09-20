@@ -21,7 +21,7 @@ html, body {
   width: 100%;
   max-width: 500px;
   padding: 40px;
-  border-radius: 20px;
+  border-radius: 15px 60px;
   background: linear-gradient(135deg, #ffffff, #f0f0f0);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   transform-style: preserve-3d;
@@ -30,6 +30,14 @@ html, body {
 
 .container:hover .formBox {
   transform: rotateY(15deg);
+}
+
+.image {
+  margin-top: -120px;
+  margin-bottom: 10px;
+  width: auto;
+  height: 100%;
+  margin-left: 122px;
 }
 
 .heading {
