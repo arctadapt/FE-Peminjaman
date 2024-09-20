@@ -18,10 +18,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
       onSubmit(username, password);
     } else {
       onSubmit(username, kelas, password);  
-      onSubmit(username, phone, kelas, password); 
     }
   
-    navigate('/welcome');
+    navigate('/dashboard');
   };  
 
   const togglePasswordVisibility = () => {
