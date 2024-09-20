@@ -2,16 +2,20 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Home from './components/Home';
+import Dashboard from './pages/Dashboard';
+import Peminjaman from './pages/Peminjaman';
+
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/peminjaman" element={<Peminjaman />} />
+
       </Routes>
     </Router>
   );

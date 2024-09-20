@@ -8,7 +8,6 @@ const AuthForm = ({ isLogin, onSubmit }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   
-  // Only for register form
   const [username, setUsername] = useState('');
   const [phone, setPhone] = useState('');
 
@@ -19,7 +18,7 @@ const AuthForm = ({ isLogin, onSubmit }) => {
     if (isLogin) {
       onSubmit(phone, password);
     } else {
-      onSubmit(username, phone, kelas, password);  // Include additional fields for register
+      onSubmit(username, phone, kelas, password); 
     }
   };
 
