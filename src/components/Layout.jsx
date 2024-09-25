@@ -1,57 +1,72 @@
-import React from 'react';
+// Layout.js
+import React, { useState } from 'react';
+import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
-const Layout = ({ children }) => {
+const Layout = () => {
   const navigate = useNavigate();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   return (
-    <div className="min-h-screen flex bg-gray-200">
-      <aside className="w-64 bg-gray-900 text-gray-200 shadow-lg flex flex-col">
-        <div className="p-6">
-          <h2 className="text-2xl font-bold mb-8 text-gray-100">Dashboard</h2>
-          <nav>
-            <ul className="space-y-4">
-              <li>
+    <div className="min-h-screen flex flex-col md:flex-row bg-gray-900 text-gray-200">
+      <aside className="w-full md:w-64 h-auto md:h-screen bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 flex flex-col shadow-lg border-r-4 border-blue-500">
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+            Dashboard
+          </h2>
+          <div className="h-1 bg-blue-500 rounded-full opacity-75 mt-3 mx-auto"></div>
+        </div>
+
+        <nav className="flex-grow">
+          <ul className="space-y-4">
+            {[
+              { name: 'Home', icon: <FaHome />, path: '/dashboard' },
+              { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman' },
+              { name: 'Riwayat', icon: <FaHistory />, path: '/riwayat' },
+              { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia' },
+            ].map((item, index) => (
+              <li key={index}>
                 <button
-                  onClick={() => navigate('/dashboard')}
-                  className="block w-full text-left py-2 px-4 rounded-md hover:bg-gray-700 hover:scale-105 transform transition duration-300 ease-in-out shadow"
+                  className="w-full py-4 px-4 flex items-center gap-3 text-lg font-medium bg-transparent hover:bg-blue-800 rounded-lg transition-all duration-300 transform hover:scale-105"
+                  onClick={() => navigate(item.path)}
                 >
-                  Home
+                  <div className="text-2xl">{item.icon}</div>
+                  <span>{item.name}</span>
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => navigate('/peminjaman')}
-                  className="block w-full text-left py-2 px-4 rounded-md hover:bg-gray-700 hover:scale-105 transform transition duration-300 ease-in-out shadow"
-                >
-                  Peminjaman
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigate('/riwayat')}
-                  className="block w-full text-left py-2 px-4 rounded-md hover:bg-gray-700 hover:scale-105 transform transition duration-300 ease-in-out shadow"
-                >
-                  Riwayat Peminjaman
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigate('/barang')}
-                  className="block w-full text-left py-2 px-4 rounded-md hover:bg-gray-700 hover:scale-105 transform transition duration-300 ease-in-out shadow"
-                >
-                  Barang Tersedia
-                </button>
-              </li>
-            </ul>
-          </nav>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="mt-8">
+          <div className="flex items-center gap-4 p-4 bg-blue-800 rounded-lg cursor-pointer transition-all duration-300 hover:bg-blue-900" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+            <FaUser className="text-2xl" />
+            <div>
+              <h3 className="text-lg font-semibold">Zeta Lawrance</h3>
+              <p className="text-sm text-gray-400">Administrator</p>
+            </div>
+          </div>
+          {showProfileMenu && (
+            <div className="bg-blue-800 mt-2 rounded-lg p-2 space-y-2">
+              <button className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition" onClick={() => navigate('/profile')}>
+                <FaUser className="text-xl" />
+                <span>View Profile</span>
+              </button>
+              <button className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition" onClick={() => navigate('/settings')}>
+                <FaCog className="text-xl" />
+                <span>Settings</span>
+              </button>
+              <button className="flex items-center gap-3 p-2 w-full hover:bg-red-600 rounded-md transition" onClick={() => navigate('/login')}>
+                <FaSignOutAlt className="text-xl" />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
         </div>
       </aside>
-
-      <main className="flex-1 bg-gray-100 p-10 shadow-inner">
-        <div className="max-w-7xl mx-auto bg-white rounded-lg p-8 shadow-lg">
-          {children}
-        </div>
+      <main className="flex-1 p-6 sm:p-12 bg-gray-900">
+        <Outlet /> {/* This renders the child routes */}
       </main>
     </div>
   );

@@ -7,6 +7,7 @@ import Peminjaman from './pages/Peminjaman';
 import LandingPage from './pages/LandingPage';
 import Riwayat from './pages/Riwayat';
 import Tersedia from './pages/Tersedia';
+import Layout from './components/Layout';
 
 function App() {
   const [availableItems, setAvailableItems] = useState([
@@ -70,12 +71,14 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/peminjaman" element={<Peminjaman availableItems={availableItems} onBorrow={handleBorrowItem} />} />
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/riwayat" element={<Riwayat history={history} activeLoans={activeLoans} onReturn={handleReturnItem} />} />
-        <Route path="/tersedia" element={<Tersedia availableItems={availableItems} />} />
-      </Routes>
+        <Route path="/" element={<Layout />}>  
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/peminjaman" element={<Peminjaman availableItems={availableItems} onBorrow={handleBorrowItem} />} />
+          <Route path="/landing" element={<LandingPage />} />
+          <Route path="/riwayat" element={<Riwayat history={history} activeLoans={activeLoans} onReturn={handleReturnItem} />} />
+          <Route path="/tersedia" element={<Tersedia availableItems={availableItems} />} />
+        </Route>
+        </Routes>
     </Router>
   );
 }
