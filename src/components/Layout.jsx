@@ -6,7 +6,6 @@ const Layout = ({ children }) => {
 
   return (
     <div className="min-h-screen flex bg-gray-200">
-      {/* Sidebar */}
       <aside className="w-64 bg-gray-900 text-gray-200 shadow-lg flex flex-col">
         <div className="p-6">
           <h2 className="text-2xl font-bold mb-8 text-gray-100">Dashboard</h2>
@@ -49,7 +48,6 @@ const Layout = ({ children }) => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 bg-gray-100 p-10 shadow-inner">
         <div className="max-w-7xl mx-auto bg-white rounded-lg p-8 shadow-lg">
           {children}
