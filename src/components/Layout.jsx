@@ -24,6 +24,7 @@ const Layout = () => {
               { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman' },
               { name: 'Riwayat', icon: <FaHistory />, path: '/riwayat' },
               { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia' },
+
             ].map((item, index) => (
               <li key={index}>
                 <button
