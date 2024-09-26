@@ -68,7 +68,7 @@ const Layout = () => {
               </button>
               <button
                 className="flex items-center gap-3 p-2 w-full hover:bg-red-600 rounded-md transition"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/')}
               >
                 <FaSignOutAlt className="text-xl" />
                 <span>Logout</span>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaLock, FaUser, FaPhone, FaEye, FaEyeSlash, FaRegBuilding } from 'react-icons/fa'; 
-import styles from './AuthForm.module.css';
+import { FaLock, FaUser, FaPhone, FaEye, FaEyeSlash, FaRegBuilding } from 'react-icons/fa';
 
 const AuthForm = ({ isLogin, onSubmit }) => {
   const [kelas, setKelas] = useState('');
@@ -28,61 +27,74 @@ const AuthForm = ({ isLogin, onSubmit }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.formBox}>
-        <img className={styles.image} src='/public/unnamed.png' alt=''></img>
-        <h2 className={styles.heading}>{isLogin ? 'Login' : 'Register'}</h2>
+    <div className="flex justify-center items-center min-h-screen bg-[#0071aa]">
+      <div className="w-full max-w-lg p-8 bg-gradient-to-r from-white to-gray-200 rounded-lg shadow-lg">
+        <img className="w-32 h-32 mx-auto mb-4 rounded-full bg-[#0071aa]" src='/public/unnamed.png' alt=''></img>
+        <h2 className="text-2xl font-bold text-center mb-6 text-gradient"> 
+          {isLogin ? 'Login' : 'Register'}
+        </h2>
         <form onSubmit={handleSubmit}>
           
-          <div className={styles.inputGroup}>
-            <label>Nama Lengkap</label>
-            <input 
-              type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-              required
-            />
-            <i><FaUser /></i>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">Nama Lengkap</label>
+            <div className="relative">
+              <input 
+                type="text" 
+                value={username} 
+                onChange={(e) => setUsername(e.target.value)} 
+                required
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              />
+              <i className="absolute top-3 right-3 text-gray-500"><FaUser /></i>
+            </div>
           </div>
 
           {!isLogin && (
-            <div className={styles.inputGroup}>
-              <label>Kelas</label>
-              <input 
-                type="text" 
-                value={kelas} 
-                onChange={(e) => setKelas(e.target.value)} 
-                required 
-              />
-              <i><FaRegBuilding /></i>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2">Kelas</label>
+              <div className="relative">
+                <input 
+                  type="text" 
+                  value={kelas} 
+                  onChange={(e) => setKelas(e.target.value)} 
+                  required 
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                />
+                <i className="absolute top-3 right-3 text-gray-500"><FaRegBuilding /></i>
+              </div>
             </div>
           )}
 
-          <div className={styles.inputGroup}>
-            <label>Password</label>
-            <input 
-              type={showPassword ? 'text' : 'password'} 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
-            />
-            <i onClick={togglePasswordVisibility}>
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </i>
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2">Password</label>
+            <div className="relative">
+              <input 
+                type={showPassword ? 'text' : 'password'} 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                required 
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              />
+              <i onClick={togglePasswordVisibility} className="absolute top-3 right-3 text-gray-500 cursor-pointer">
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </i>
+            </div>
           </div>
 
-          <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+          <button type="submit" className="w-full py-3 bg-[#00b1dd] text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300">
+            {isLogin ? 'Login' : 'Register'}
+          </button>
         </form>
-        <div className={styles.switchLink}>
+        <div className="text-center mt-4">
           {isLogin ? (
-            <p>
+            <p className="text-gray-600">
               Don't have an account?{' '}
-              <a onClick={() => navigate('/register')}>Register</a>
+              <a onClick={() => navigate('/register')} className="text-blue-600 font-bold cursor-pointer">Register</a>
             </p>
           ) : (
-            <p>
+            <p className="text-gray-600">
               Already have an account?{' '}
-              <a onClick={() => navigate('/login')}>Login</a>
+              <a onClick={() => navigate('/login')} className="text-blue-600 font-bold cursor-pointer">Login</a>
             </p>
           )}
         </div>
