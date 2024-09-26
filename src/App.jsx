@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -8,6 +9,8 @@ import LandingPage from './pages/LandingPage';
 import Riwayat from './pages/Riwayat';
 import Tersedia from './pages/Tersedia';
 import Layout from './components/Layout';
+import Settings from './pages/Settings';
+
 
 function App() {
   const [availableItems, setAvailableItems] = useState([
@@ -67,9 +70,10 @@ function App() {
   };
   
   return (
+    <ThemeProvider>
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Layout />}>  
           <Route path="/dashboard" element={<Dashboard />} />
@@ -77,9 +81,12 @@ function App() {
           <Route path="/landing" element={<LandingPage />} />
           <Route path="/riwayat" element={<Riwayat history={history} activeLoans={activeLoans} onReturn={handleReturnItem} />} />
           <Route path="/tersedia" element={<Tersedia availableItems={availableItems} />} />
+          <Route path="/settings" element={<Settings />} />
+
         </Route>
         </Routes>
     </Router>
+    </ThemeProvider>
   );
 }
 

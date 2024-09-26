@@ -25,6 +25,7 @@ const Layout = () => {
               { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman' },
               { name: 'Riwayat', icon: <FaHistory />, path: '/riwayat' },
               { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia' },
+
             ].map((item, index) => (
               <li key={index}>
                 <button
@@ -66,7 +67,7 @@ const Layout = () => {
         </div>
       </aside>
       <main className="flex-1 p-6 sm:p-12 bg-gray-900">
-        <Outlet /> {/* This renders the child routes */}
+        <Outlet /> 
       </main>
     </div>
   );
