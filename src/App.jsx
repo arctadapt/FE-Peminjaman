@@ -4,7 +4,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Peminjaman from './pages/Peminjaman';
-import LandingPage from './pages/LandingPage';
 import Riwayat from './pages/Riwayat';
 import Tersedia from './pages/Tersedia';
 import Layout from './components/Layout';
@@ -76,7 +75,6 @@ function App() {
         <Route path="/" element={<Layout />}>  
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/peminjaman" element={<Peminjaman availableItems={availableItems} onBorrow={handleBorrowItem} />} />
-          <Route path="/landing" element={<LandingPage />} />
           <Route path="/riwayat" element={<Riwayat history={history} activeLoans={activeLoans} onReturn={handleReturnItem} />} />
           <Route path="/tersedia" element={<Tersedia availableItems={availableItems} />} />
           <Route path="/profile" element={<Profile />} />
