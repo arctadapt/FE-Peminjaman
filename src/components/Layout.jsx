@@ -1,4 +1,3 @@
-// Layout.js
 import React, { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -10,16 +9,16 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-900 text-gray-200">
-      <aside className="w-full md:w-64 h-auto md:h-screen bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 flex flex-col shadow-lg border-r-4 border-blue-500">
+      <aside className="w-full md:w-64 h-auto md:h-screen bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 flex flex-col shadow-lg border-r-4 border-blue-500 overflow-y-auto">
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
             Dashboard
           </h2>
-          <div className="h-1 bg-blue-500 rounded-full opacity-75 mt-3 mx-auto"></div>
+          <div className="h-1 bg-blue-500 rounded-full opacity-75 mt-6 mx-auto"></div>
         </div>
 
         <nav className="flex-grow">
-          <ul className="space-y-4">
+          <ul className="space-y-6">
             {[
               { name: 'Home', icon: <FaHome />, path: '/dashboard' },
               { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman' },
@@ -41,7 +40,10 @@ const Layout = () => {
         </nav>
 
         <div className="mt-8">
-          <div className="flex items-center gap-4 p-4 bg-blue-800 rounded-lg cursor-pointer transition-all duration-300 hover:bg-blue-900" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+          <div
+            className="flex items-center gap-4 p-4 bg-blue-800 rounded-lg cursor-pointer transition-all duration-300 hover:bg-blue-900"
+            onClick={() => setShowProfileMenu(!showProfileMenu)}
+          >
             <FaUser className="text-2xl" />
             <div>
               <h3 className="text-lg font-semibold">Zeta Lawrance</h3>
@@ -50,15 +52,24 @@ const Layout = () => {
           </div>
           {showProfileMenu && (
             <div className="bg-blue-800 mt-2 rounded-lg p-2 space-y-2">
-              <button className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition" onClick={() => navigate('/profile')}>
+              <button
+                className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition"
+                onClick={() => navigate('/profile')}
+              >
                 <FaUser className="text-xl" />
                 <span>View Profile</span>
               </button>
-              <button className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition" onClick={() => navigate('/settings')}>
+              <button
+                className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition"
+                onClick={() => navigate('/settings')}
+              >
                 <FaCog className="text-xl" />
                 <span>Settings</span>
               </button>
-              <button className="flex items-center gap-3 p-2 w-full hover:bg-red-600 rounded-md transition" onClick={() => navigate('/login')}>
+              <button
+                className="flex items-center gap-3 p-2 w-full hover:bg-red-600 rounded-md transition"
+                onClick={() => navigate('/login')}
+              >
                 <FaSignOutAlt className="text-xl" />
                 <span>Logout</span>
               </button>
@@ -66,7 +77,7 @@ const Layout = () => {
           )}
         </div>
       </aside>
-      <main className="flex-1 p-6 sm:p-12 bg-gray-900">
+      <main className="flex-1 p-6 sm:p-12 bg-gray-900 overflow-y-auto">
         <Outlet /> 
       </main>
     </div>
@@ -74,3 +85,4 @@ const Layout = () => {
 };
 
 export default Layout;
+  

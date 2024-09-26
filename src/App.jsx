@@ -9,15 +9,15 @@ import LandingPage from './pages/LandingPage';
 import Riwayat from './pages/Riwayat';
 import Tersedia from './pages/Tersedia';
 import Layout from './components/Layout';
+import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-
 
 function App() {
   const [availableItems, setAvailableItems] = useState([
-    { id: 1, name: 'Bola Basket', stock: 10 },
-    { id: 2, name: 'Bola Futsal', stock: 5 },
-    { id: 3, name: 'Matras', stock: 7 },
-    { id: 4, name: 'Proyektor', stock: 3 },
+    { id: 1, name: 'Bola Basket', stock: 3 },
+    { id: 2, name: 'Bola Futsal', stock: 2 },
+    { id: 3, name: 'Matras', stock: 2 },
+    { id: 4, name: 'Proyektor', stock: 6 },
   ]);
 
   const [history, setHistory] = useState([]);
@@ -82,7 +82,7 @@ function App() {
           <Route path="/riwayat" element={<Riwayat history={history} activeLoans={activeLoans} onReturn={handleReturnItem} />} />
           <Route path="/tersedia" element={<Tersedia availableItems={availableItems} />} />
           <Route path="/settings" element={<Settings />} />
-
+          <Route path="/profile" element={<Profile />} />
         </Route>
         </Routes>
     </Router>
