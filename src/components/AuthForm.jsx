@@ -28,9 +28,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#0071aa]">
-      <div className="w-full max-w-lg p-8 bg-gradient-to-r from-white to-gray-200 rounded-lg shadow-lg">
-        <img className="w-32 h-32 mx-auto mb-4 rounded-full bg-[#0071aa]" src='/public/unnamed.png' alt=''></img>
-        <h2 className="text-2xl font-bold text-center mb-6 text-gradient"> 
+      <div className="w-full max-w-lg p-8 bg-gradient-to-r from-white to-gray-200 rounded-3xl shadow-lg">
+        <img className="w-50 h-50 mx-auto -mt-28 mb-11 rounded-full bg-[#0071aa]" src='/public/unnamed.png' alt=''></img>
+        <h2 className="text-2xl font-bold text-center mb-7 text-gradient"> 
           {isLogin ? 'Login' : 'Register'}
         </h2>
         <form onSubmit={handleSubmit}>
@@ -43,9 +43,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
                 value={username} 
                 onChange={(e) => setUsername(e.target.value)} 
                 required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full p-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500"
               />
-              <i className="absolute top-3 right-3 text-gray-500"><FaUser /></i>
+              <i className="absolute top-4 right-5 text-gray-500"><FaUser /></i>
             </div>
           </div>
 
@@ -58,9 +58,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
                   value={kelas} 
                   onChange={(e) => setKelas(e.target.value)} 
                   required 
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                  className="w-full p-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500"
                 />
-                <i className="absolute top-3 right-3 text-gray-500"><FaRegBuilding /></i>
+                <i className="absolute top-4 right-5 text-gray-500"><FaRegBuilding /></i>
               </div>
             </div>
           )}
@@ -73,28 +73,28 @@ const AuthForm = ({ isLogin, onSubmit }) => {
                 value={password} 
                 onChange={(e) => setPassword(e.target.value)} 
                 required 
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full p-3 border border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500"
               />
-              <i onClick={togglePasswordVisibility} className="absolute top-3 right-3 text-gray-500 cursor-pointer">
+              <i onClick={togglePasswordVisibility} className="absolute top-4 right-5 text-gray-500 cursor-pointer">
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </i>
             </div>
           </div>
 
-          <button type="submit" className="w-full py-3 bg-[#00b1dd] text-white font-bold rounded-lg hover:bg-blue-700 transition duration-300">
+          <button type="submit" className="w-full py-3 bg-[#00b1dd] text-white font-bold rounded-2xl hover:bg-blue-700 transition duration-300">
             {isLogin ? 'Login' : 'Register'}
           </button>
         </form>
         <div className="text-center mt-4">
           {isLogin ? (
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-semibold">
               Don't have an account?{' '}
               <a onClick={() => navigate('/register')} className="text-blue-600 font-bold cursor-pointer">Register</a>
             </p>
           ) : (
-            <p className="text-gray-600">
+            <p className="text-gray-600 font-semibold">
               Already have an account?{' '}
-              <a onClick={() => navigate('/login')} className="text-blue-600 font-bold cursor-pointer">Login</a>
+              <a onClick={() => navigate('/')} className="text-blue-600 font-bold cursor-pointer">Login</a>
             </p>
           )}
         </div>
