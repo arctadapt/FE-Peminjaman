@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaClipboardList, FaHistory } from 'react-icons/fa';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -11,8 +11,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gray-900 text-gray-200">
-      <main className="flex-1 p-6 sm:p-12 bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-cover bg-center" style={{ backgroundImage: "url('background.png')" }}>
+      <main className="flex-1 p-6 sm:p-12 bg- bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
           <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">Selamat Datang di Peminjaman Barang</h1>
@@ -25,7 +25,7 @@ const Dashboard = () => {
             </button>
           </section>
 
-          <section className="grid grid-cols-1 sm:grid-cols-2  gap-6 sm:gap-12">
+          <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
             {[{
                 title: 'Barang yang Tersedia',
                 description: 'Lacak peminjaman barang-barang yang ada di sekolah.',
