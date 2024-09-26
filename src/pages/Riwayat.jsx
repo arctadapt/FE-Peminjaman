@@ -22,7 +22,7 @@ const Riwayat = ({ history, activeLoans, onReturn }) => {
                   </button>
                 )}
                 {entry.returned && (
-                  <p className="text-green-600 font-semibold mt-2">Barang telah dikembalikan</p>
+                  <p className="text-green-600 font-semibold mt-2">Barang/Kelas telah dikembalikan</p>
                 )}
               </li>
             ))}
