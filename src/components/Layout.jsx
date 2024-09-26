@@ -8,8 +8,8 @@ const Layout = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gray-900 text-gray-200">
-      <aside className="w-full md:w-64 h-screen bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 flex flex-col shadow-lg border-r-4 border-blue-500">
+    <div className="flex h-screen bg-gray-900 text-gray-200">
+      <aside className="w-64 bg-blue-700 text-white p-6 flex flex-col shadow-lg border-r-4 border-blue-500">
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
             Dashboard
@@ -27,10 +27,10 @@ const Layout = () => {
             ].map((item, index) => (
               <li key={index}>
                 <button
-                  className="w-full py-4 flex items-center gap-3 text-lg font-medium bg-transparent hover:bg-blue-800 rounded-lg transition-all duration-300 transform hover:scale-105"
+                  className="w-full py-4 flex items-center gap-4 text-lg font-medium bg-transparent hover:bg-blue-800 rounded-lg transition-all duration-300 transform hover:scale-105"
                   onClick={() => navigate(item.path)}
                 >
-                  <div className="text-2xl">{item.icon}</div>
+                  <div className="text-2xl ml-4">{item.icon}</div>
                   <span>{item.name}</span>
                 </button>
               </li>
@@ -76,9 +76,9 @@ const Layout = () => {
           )}
         </div>
       </aside>
-      <main className="flex-1 p-6 bg-gray-900 overflow-y-auto h-screen">
+      <div className="flex-1 bg-gray-900">
         <Outlet />
-      </main>
+      </div>
     </div>
   );
 };

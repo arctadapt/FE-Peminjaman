@@ -50,7 +50,7 @@ const Peminjaman = ({ availableItems, onBorrow }) => {
   };
 
   return (
-    <div className="h-full bg-gray-900 flex items-center justify-center py-10">
+    <div className="flex items-center justify-center py-10 min-h-screen flex flex-col bg-gray-900">
       <div className="bg-white shadow-lg rounded-3xl p-8 max-w-lg w-full text-center transition-transform duration-300 transform hover:scale-102 border border-gray-300">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Peminjaman Barang/Kelas</h1>
 

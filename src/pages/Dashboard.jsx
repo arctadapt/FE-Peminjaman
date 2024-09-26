@@ -11,7 +11,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-cover bg-center" style={{ backgroundImage: "url('background.png')" }}>
+    <div className="min-h-screen flex flex-col bg-gray-900">
       <main className="flex-1 p-6 sm:p-12 bg- bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
           <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
