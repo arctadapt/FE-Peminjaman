@@ -94,7 +94,7 @@ const AuthForm = ({ isLogin, onSubmit }) => {
           ) : (
             <p className="text-gray-600">
               Already have an account?{' '}
-              <a onClick={() => navigate('/login')} className="text-blue-600 font-bold cursor-pointer">Login</a>
+              <a onClick={() => navigate('/')} className="text-blue-600 font-bold cursor-pointer">Login</a>
             </p>
           )}
         </div>
