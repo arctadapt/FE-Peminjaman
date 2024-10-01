@@ -76,7 +76,7 @@ const Peminjaman = ({ availableItems, onBorrow }) => {
             <button
               className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${isBarang === true ? 'bg-teal-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
               onClick={() => setIsBarang(true)}
-            >
+            > 
               Barang
             </button>
             <button

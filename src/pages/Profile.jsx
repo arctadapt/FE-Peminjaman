@@ -7,7 +7,7 @@ const Profile = () => {
         <h1 className="text-4xl font-bold mb-6 text-center text-blue-600">Profile</h1>
         <div className="mb-6">
           <img
-            className="w-36 h-36 rounded-full mx-auto"
+            className="w-36 h-36 rounded-3xl mx-auto"
             src="./public/profile.jpg"
             alt="Profile Avatar"
           />
