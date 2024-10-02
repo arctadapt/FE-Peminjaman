@@ -1,98 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaHome, FaClipboardList, FaBoxOpen, FaHistory } from 'react-icons/fa';
+import { FaClipboardList, FaHistory } from 'react-icons/fa';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const handleStartBorrowing = () => {
     navigate('/peminjaman');
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-gray-800 to-gray-900 text-gray-200">
-      {/* Sidebar */}
-      <aside className="w-64 h-screen bg-gradient-to-br from-purple-700 to-blue-900 text-white p-6 flex flex-col shadow-2xl">
-        <h2 className="text-4xl font-semibold mb-10 text-center">Dashboard</h2>
-        <nav>
-          <ul className="space-y-6">
-            {[
-              { name: 'Home', icon: <FaHome /> },
-              { name: 'Peminjaman', icon: <FaBoxOpen /> },
-              { name: 'Riwayat', icon: <FaHistory /> },
-              { name: 'Tersedia', icon: <FaClipboardList /> },
-            ].map((item, index) => (
-              <li key={index}>
-                <button
-                  className="w-full py-4 px-6 rounded-lg flex items-center gap-3 text-lg font-medium bg-transparent hover:bg-purple-600 hover:bg-opacity-50 transition-all duration-300"
-                  onClick={() => navigate(item.name === 'Home' ? '/' : `/${item.name.toLowerCase().replace(/\s+/g, '')}`)}
-                >
-                  {item.icon} <span>{item.name}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="mt-auto">
-          <button
-            className="block w-full py-4 px-6 bg-red-600 hover:bg-red-700 rounded-lg text-center font-semibold transition duration-300"
-            onClick={() => navigate('/login')}
-          >
-            Logout
-          </button>
-        </div>
-      </aside>
-
-      {/* Main content */}
-      <main className="flex-1 p-12">
+    <div className="min-h-screen flex flex-col bg-gray-900">
+      <main className="flex-1 p-6 sm:p-12 bg- bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
-          {/* Welcome Section */}
-          <section className="bg-gradient-to-br from-purple-600 to-blue-800 p-14 rounded-3xl shadow-2xl mb-12">
-            <h1 className="text-5xl font-extrabold text-white mb-6">Selamat Datang di Peminjaman Barang</h1>
-            <p className="text-lg text-gray-300 mb-8">Kelola peminjaman barang-barang sekolah dengan mudah dan cepat.</p>
+          <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">Selamat Datang di Peminjaman Barang</h1>
+            <p className="text-base font-medium sm:text-lg text-gray-300 mb-6 sm:mb-8">Kelola peminjaman barang-barang sekolah dengan mudah dan cepat.</p>
             <button
               onClick={handleStartBorrowing}
-              className="px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-800 text-white font-semibold rounded-2xl shadow-lg hover:from-blue-700 hover:to-purple-900 transition-all duration-300 transform hover:scale-105"
+              className="px-6 py-3 sm:px-10 sm:py-4 bg-white text-blue-800 font-bold rounded-2xl shadow-lg hover:bg-gray-300 transition-transform duration-300 transform"
             >
               Mulai Meminjam
             </button>
           </section>
 
-          {/* Dashboard Cards */}
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-            {[
-              {
+          <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
+            {[{
                 title: 'Barang yang Tersedia',
                 description: 'Lacak peminjaman barang-barang yang ada di sekolah.',
-                bgClass: 'bg-gradient-to-r from-blue-500 to-blue-700',
+                bgClass: 'bg-yellow-500',
                 icon: <FaClipboardList />,
-              },
-              {
-                title: 'Peminjaman Aktif',
-                description: 'Lihat status peminjaman yang sedang berlangsung.',
-                bgClass: 'bg-gradient-to-r from-green-500 to-green-700',
-                icon: <FaBoxOpen />,
+                path: '/tersedia'
               },
               {
                 title: 'Riwayat Peminjaman',
                 description: 'Lihat riwayat peminjaman barang-barang sekolah.',
-                bgClass: 'bg-gradient-to-r from-purple-500 to-purple-700',
+                bgClass: 'bg-teal-600',
                 icon: <FaHistory />,
+                path: '/riwayat' 
               },
             ].map((card, index) => (
               <div
                 key={index}
-                className={`p-8 ${card.bgClass} rounded-2xl shadow-2xl transition-transform transform hover:scale-105 hover:shadow-xl`}
+                className={`p-6 sm:p-8 ${card.bgClass} rounded-3xl shadow-xl transition-transform transform hover:scale-105 hover:shadow-2xl hover:-translate-y-2 border-4 border-white border-opacity-30 cursor-pointer`}
+                onClick={() => navigate(card.path)}
               >
                 <div className="flex items-center space-x-4">
-                  <div className="text-4xl text-white">{card.icon}</div>
+                  <div className="text-3xl sm:text-4xl text-white">{card.icon}</div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white">{card.title}</h3>
-                    <p className="text-base text-gray-200 mt-2">{card.description}</p>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-white">{card.title}</h3>
+                    <p className="text-sm sm:text-base text-gray-300 mt-2">{card.description}</p>
                   </div>
                 </div>
                 <div className="mt-4">
-                  <div className="h-1 w-50 bg-white rounded-full"></div>
+                  <div className="h-1 w-full bg-white rounded-full opacity-75"></div>
                 </div>
               </div>
             ))}
