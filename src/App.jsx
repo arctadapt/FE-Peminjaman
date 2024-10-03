@@ -81,7 +81,7 @@ function App() {
               <Route path="/riwayat" element={<Riwayat history={history} activeLoans={activeLoans} onReturn={handleReturnItem} />} />
               <Route path="/tersedia" element={<Tersedia availableItems={availableItems} />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:userId" element={<Profile />} />
             </Route>
           </Route>
         </Routes>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import axios from 'axios';
@@ -7,7 +7,15 @@ import { useSnackbar } from '../components/SnackbarProvider';
 const Layout = () => {
   const navigate = useNavigate();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const showSnackbar = useSnackbar(); // Menggunakan useSnackbar
+  const showSnackbar = useSnackbar();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -16,16 +24,14 @@ const Layout = () => {
       });
 
       if (response.status === 200) {
-        // Hapus data pengguna dari localStorage
-        localStorage.removeItem('userData'); // Menghapus data pengguna
-        
-        showSnackbar(response.data.message, 'success'); // Menampilkan Snackbar saat berhasil
+        localStorage.removeItem('userData');
+        showSnackbar(response.data.message, 'success');
         navigate('/');
       } else {
-        showSnackbar(response.data.message || 'Logout failed', 'error'); // Menampilkan Snackbar jika gagal
+        showSnackbar(response.data.message || 'Logout failed', 'error');
       }
     } catch (error) {
-      showSnackbar('An error occurred during logout. Please try again.', 'error'); // Menampilkan Snackbar saat terjadi error
+      showSnackbar('An error occurred during logout. Please try again.', 'error');
     }
   };
 
@@ -67,15 +73,15 @@ const Layout = () => {
           >
             <FaUser className="text-2xl" />
             <div>
-              <h3 className="text-lg font-semibold">Zeta Lawrance</h3>
-              <p className="text-sm text-gray-400">Administrator</p>
+              <h3 className="text-lg font-semibold">{userData?.nama_lengkap || "User Name"}</h3>
+              <p className="text-sm text-gray-400">{userData?.role || "Role"}</p>
             </div>
           </div>
           {showProfileMenu && (
             <div className="bg-blue-900 mt-2 rounded-lg p-2 space-y-2">
               <button
                 className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition"
-                onClick={() => navigate('/profile')}
+                onClick={() => navigate(`/profile/${userData?.id}`)}
               >
                 <FaUser className="text-xl" />
                 <span>View Profile</span>
