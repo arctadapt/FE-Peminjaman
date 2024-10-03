@@ -74,7 +74,8 @@ const Layout = () => {
             <FaUser className="text-2xl" />
             <div>
               <h3 className="text-lg font-semibold">{userData?.nama_lengkap || "User Name"}</h3>
-              <p className="text-sm text-gray-400">{userData?.role || "Role"}</p>
+              <p className="text-sm text-gray-400">{userData?.role || "role"}</p>
+              <p className="text-sm text-gray-400">{userData?.kelas || "kelas"}</p>
             </div>
           </div>
           {showProfileMenu && (

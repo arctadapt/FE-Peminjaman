@@ -37,8 +37,8 @@ const Login = () => {
   
         // Tangani kode status tertentu (misalnya, 400, 404, 500)
         if (status === 400) {
-          setError('Bad request. Please check your login details.');
-          showSnackbar('Bad request. Please check your login details.', 'error'); // Menampilkan Snackbar
+          setError('Nama Lengkap atau Password salah!');
+          showSnackbar('Nama Lengkap atau Password salah!', 'error'); // Menampilkan Snackbar
         } else if (status === 404) {
           setError('User not found. Please check your credentials.');
           showSnackbar('User not found. Please check your credentials.', 'error'); // Menampilkan Snackbar

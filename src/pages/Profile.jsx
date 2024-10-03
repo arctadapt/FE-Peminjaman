@@ -82,6 +82,7 @@ const Profile = () => {
         <div className="text-center">
           <p className="text-2xl font-semibold text-gray-800">{user.nama_lengkap}</p>
           <p className="text-lg text-gray-600">{user.role}</p>
+          <p className="text-lg text-gray-600">{user.kelas}</p>
         </div>
       </div>
     </div>
