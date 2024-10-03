@@ -10,6 +10,7 @@ import Tersedia from './pages/Tersedia';
 import Layout from './components/Layout';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [availableItems, setAvailableItems] = useState([
@@ -20,7 +21,6 @@ function App() {
   ]);
 
   const [history, setHistory] = useState([]);
-
   const [activeLoans, setActiveLoans] = useState([]);
 
   const handleBorrowItem = (borrowedItems, newHistoryEntry) => {
@@ -70,20 +70,22 @@ function App() {
   
   return (
     <ThemeProvider>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route element={<Layout />}>  
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/peminjaman" element={<Peminjaman availableItems={availableItems} onBorrow={handleBorrowItem} />} />
-          <Route path="/riwayat" element={<Riwayat history={history} activeLoans={activeLoans} onReturn={handleReturnItem} />} />
-          <Route path="/tersedia" element={<Tersedia availableItems={availableItems} />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/profile" element={<Profile />} />
-        </Route>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Layout />}>  
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/peminjaman" element={<Peminjaman availableItems={availableItems} onBorrow={handleBorrowItem} />} />
+              <Route path="/riwayat" element={<Riwayat history={history} activeLoans={activeLoans} onReturn={handleReturnItem} />} />
+              <Route path="/tersedia" element={<Tersedia availableItems={availableItems} />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+          </Route>
         </Routes>
-        </Router>
+      </Router>
     </ThemeProvider>
   );
 }

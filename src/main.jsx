@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import SnackbarProvider from './components/SnackbarProvider';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <SnackbarProvider>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </SnackbarProvider>,
+  document.getElementById("root")
 );

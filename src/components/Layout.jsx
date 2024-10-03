@@ -1,11 +1,33 @@
 import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import axios from 'axios';
+import { useSnackbar } from '../components/SnackbarProvider';
 
 const Layout = () => {
   const navigate = useNavigate();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const showSnackbar = useSnackbar(); // Menggunakan useSnackbar
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.delete('http://localhost:3001/auth/logout', {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        // Hapus data pengguna dari localStorage
+        localStorage.removeItem('userData'); // Menghapus data pengguna
+        
+        showSnackbar(response.data.message, 'success'); // Menampilkan Snackbar saat berhasil
+        navigate('/');
+      } else {
+        showSnackbar(response.data.message || 'Logout failed', 'error'); // Menampilkan Snackbar jika gagal
+      }
+    } catch (error) {
+      showSnackbar('An error occurred during logout. Please try again.', 'error'); // Menampilkan Snackbar saat terjadi error
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-900 text-gray-200">
@@ -19,7 +41,7 @@ const Layout = () => {
 
         <nav className="flex-grow">
           <ul className="space-y-6">
-            {[ 
+            {[
               { name: 'Home', icon: <FaHome />, path: '/dashboard' },
               { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman' },
               { name: 'Riwayat', icon: <FaHistory />, path: '/riwayat' },
@@ -67,7 +89,7 @@ const Layout = () => {
               </button>
               <button
                 className="flex items-center gap-3 p-2 w-full hover:bg-red-600 rounded-md transition"
-                onClick={() => navigate('/')}
+                onClick={handleLogout}
               >
                 <FaSignOutAlt className="text-xl" />
                 <span>Logout</span>
