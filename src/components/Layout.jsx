@@ -1,37 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import axios from 'axios';
+import { checkLogin, logOut } from '../features/AuthSlice';
 import { useSnackbar } from '../components/SnackbarProvider';
 
 const Layout = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const showSnackbar = useSnackbar();
-  const [userData, setUserData] = useState(null);
+  const { user, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      setUserData(JSON.parse(storedUserData));
-    }
-  }, []);
+    const verifyAuth = async () => {
+      try {
+        await dispatch(checkLogin()).unwrap();
+      } catch (error) {
+        console.error('Failed to verify authentication:', error);
+        navigate('/dashboard');
+      }
+    };
+
+    verifyAuth();
+  }, [dispatch, navigate]);
 
   const handleLogout = async () => {
     try {
-      const response = await axios.delete('http://localhost:3001/auth/logout', {
-        withCredentials: true,
-      });
-
-      if (response.status === 200) {
-        localStorage.removeItem('userData');
-        showSnackbar(response.data.message, 'success');
-        navigate('/');
-      } else {
-        showSnackbar(response.data.message || 'Logout failed', 'error');
-      }
+      await dispatch(logOut()).unwrap();
+      showSnackbar('Logout successful', 'success');
+      navigate('/');
     } catch (error) {
       showSnackbar('An error occurred during logout. Please try again.', 'error');
+    }
+  };
+
+  const handleViewProfile = () => {
+    if (user && user.id) {
+      navigate(`/profile/${user.id}`);
+    } else {
+      showSnackbar('User profile not available', 'error');
     }
   };
 
@@ -73,16 +81,16 @@ const Layout = () => {
           >
             <FaUser className="text-2xl" />
             <div>
-              <h3 className="text-lg font-semibold">{userData?.nama_lengkap || "User Name"}</h3>
-              <p className="text-sm text-gray-400">{userData?.role || "role"}</p>
-              <p className="text-sm text-gray-400">{userData?.kelas || "kelas"}</p>
+              <h3 className="text-lg font-semibold">{user?.nama_lengkap || "User Name"}</h3>
+              <p className="text-sm text-gray-400">{user?.role || "Role"}</p>
+              <p className="text-sm text-gray-400">{user?.kelas || "Kelas"}</p>
             </div>
           </div>
           {showProfileMenu && (
             <div className="bg-blue-900 mt-2 rounded-lg p-2 space-y-2">
               <button
                 className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition"
-                onClick={() => navigate(`/profile/${userData?.id}`)}
+                onClick={handleViewProfile}
               >
                 <FaUser className="text-xl" />
                 <span>View Profile</span>

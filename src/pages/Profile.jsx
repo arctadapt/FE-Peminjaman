@@ -1,60 +1,41 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import avatar from "../avatar.svg"
+import avatar from "../avatar.svg";
+import { useSelector } from 'react-redux';
+import api from "../features/axios";
+import API_URL from "../config/config";
 
 const Profile = () => {
-  const { userId } = useParams();
-  const [user, setUser] = useState(null);
+  const { isError, user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (!userId) {
-        setError("User ID tidak valid");
-        setLoading(false);
-        return;
-      }
+    dispatch(checkLogin());
+  }, [dispatch]);
 
-      try {
-        const userDataString = localStorage.getItem('userData');
-        if (!userDataString) {
-          throw new Error('User tidak terautentikasi');
-        }
-        const userData = JSON.parse(userDataString);
-        
-        if (parseInt(userId) !== userData.id) {
-          throw new Error('Anda tidak memiliki akses ke profil ini');
-        }
+  useEffect(() => {
+    if (isError) {
+      navigate("/");
+    }
+  }, [isError, navigate]);
 
-        const response = await axios.get(`http://localhost:3001/users/${userId}`, {
-          headers: {
-            'X-User-Id': userData.id.toString()
-          }
-        });
+  useEffect(() => {
+    if (!isError && user) {
+      const fetchData = async () => {
+        try {
+          const response = await api.get(`${API_URL}/users/${id}`);
+          const data = response.data.data.user;
 
-        if (response.data.status === "success") {
-          setUser(response.data.data.user);
-        } else {
-          setError(response.data.error);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        if (error.response && error.response.status === 401) {
-          setError("Sesi Anda telah berakhir. Silakan login kembali.");
-          navigate('/login');
-        } else {
-          setError(error.message || "Terjadi kesalahan saat mengambil data pengguna");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [userId, navigate]);
+      };
+  
+      fetchData();
+    }
+  }, [id, isError, user]);
 
   if (loading) {
     return <div className="text-white">Loading...</div>;

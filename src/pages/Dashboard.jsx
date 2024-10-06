@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaClipboardList, FaHistory } from 'react-icons/fa';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  useEffect(() => {
+    // Cek apakah ada token di localStorage
+    const token = localStorage.getItem('token');
+    if (!token) {
+      // Jika tidak ada token, arahkan pengguna ke halaman login
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleStartBorrowing = () => {
     navigate('/peminjaman');
