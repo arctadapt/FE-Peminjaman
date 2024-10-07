@@ -6,11 +6,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Cek apakah ada token di localStorage
     const token = localStorage.getItem('token');
+    console.log('Dashboard: token =', token);
     if (!token) {
-      // Jika tidak ada token, arahkan pengguna ke halaman login
+      console.log('No token found, navigating to login');
       navigate('/');
+    } else {
+      console.log('Token found, staying on dashboard');
     }
   }, [navigate]);
 

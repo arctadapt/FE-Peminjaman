@@ -13,25 +13,24 @@ const initialState = {
 
 export const LoginUser = createAsyncThunk("user/LoginUser", async (user, thunkAPI) => {
     try {
+        console.log('LoginUser thunk called with:', user);
         const response = await api.post(`${API_URL}/auth/login`, {
             nama_lengkap: user.nama_lengkap,
             password: user.password
         });
-        console.log('Login response:', response.data); // Debugging
+        console.log('Login response:', response.data);
         if (response.data && response.data.token) {
-            // Simpan token di localStorage
             localStorage.setItem('token', response.data.token);
-            return response.data;
+            return {
+                user: response.data.data,
+                token: response.data.token
+            };
         } else {
             return thunkAPI.rejectWithValue("Token tidak ditemukan dalam respons");
         }
     } catch (error) {
-        console.error('Login error:', error); // Debugging
-        if (error.response) {
-            const message = error.response.data.error || "Terjadi kesalahan saat login";
-            return thunkAPI.rejectWithValue(message);
-        }
-        return thunkAPI.rejectWithValue("Terjadi kesalahan saat login");
+        console.error('Login error:', error);
+        return thunkAPI.rejectWithValue(error.response?.data?.message || "Terjadi kesalahan saat login");
     }
 });
 
@@ -91,13 +90,14 @@ export const authSlice = createSlice({
             state.message = '';
         });
         builder.addCase(LoginUser.fulfilled, (state, action) => {
+            console.log('LoginUser.fulfilled payload:', action.payload);
             state.isLoading = false;
             state.isSuccess = true;
             state.isError = false;
             state.user = action.payload.user;
             state.token = action.payload.token;
             state.message = 'Login berhasil';
-            console.log('Login fulfilled, state:', state); // Debugging
+            console.log('Updated auth state:', state);
         });
         builder.addCase(LoginUser.rejected, (state, action) => {
             state.isLoading = false;

@@ -15,7 +15,9 @@ const Layout = () => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
+        console.log('Verifying authentication');
         await dispatch(checkLogin()).unwrap();
+        console.log('Authentication verified successfully');
       } catch (error) {
         console.error('Failed to verify authentication:', error);
         navigate('/dashboard');
