@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../features/axios';
+import API_URL from '../config/config';
 
-const Peminjaman = ({ availableItems, onBorrow }) => {
+const Peminjaman = ({ onBorrow }) => {
   const [namaLengkap, setNamaLengkap] = useState('');
   const [kelasPeminjam, setKelasPeminjam] = useState('');
   const [isBarang, setIsBarang] = useState(null);
@@ -9,6 +11,33 @@ const Peminjaman = ({ availableItems, onBorrow }) => {
   const [jurusan, setJurusan] = useState('');
   const [isApproved, setIsApproved] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [availableItems, setAvailableItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await api.get(`${API_URL}/items`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (response.data.status === 'success') {
+          setAvailableItems(response.data.data_barang);
+        } else {
+          throw new Error(response.data.message || 'Gagal mengambil data barang');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setError(error.message || 'Terjadi kesalahan saat mengambil data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, []);
 
   const handleSubmit = () => {
     setSubmitted(true);
@@ -93,23 +122,29 @@ const Peminjaman = ({ availableItems, onBorrow }) => {
             {isBarang ? (
               <div>
                 <h2 className="text-lg font-semibold mb-2 text-gray-700">Pilih Barang:</h2>
-                <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4">
-                  {availableItems.map((item) => (
-                    <li key={item.id} className="flex justify-between items-center mb-2 p-2 hover:bg-teal-200 transition duration-200 rounded-xl">
-                      <span className="text-gray-700 font-semibold">{item.name} (Stok: {item.stock})</span>
-                      {item.stock > 0 ? (
-                        <button
-                          className="text-teal-600 hover:underline text-base font-semibold"
-                          onClick={() => handleSelectItem(item)}
-                        >
-                          Pilih
-                        </button>
-                      ) : (
-                        <span className="text-red-500 text-sm">Habis</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                {isLoading ? (
+                  <p className="text-gray-600">Memuat data...</p>
+                ) : error ? (
+                  <p className="text-red-500">Error: {error}</p>
+                ) : (
+                  <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4">
+                    {availableItems.map((item) => (
+                      <li key={item.id_barang} className="flex justify-between items-center mb-2 p-2 hover:bg-teal-200 transition duration-200 rounded-xl">
+                        <span className="text-gray-700 font-semibold">{item.nama_barang} (Stok: {item.jumlah_barang})</span>
+                        {item.jumlah_barang > 0 ? (
+                          <button
+                            className="text-teal-600 hover:underline text-base font-semibold"
+                            onClick={() => handleSelectItem(item)}
+                          >
+                            Pilih
+                          </button>
+                        ) : (
+                          <span className="text-red-500 text-sm">Habis</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <p className="text-lg mt-2 mb-2 font-semibold text-gray-700">Barang Dipinjam: <span className="text-teal-600">{barangDipinjam.join(', ')}</span></p>
                 <button
                   onClick={() => handleRemoveItem(barangDipinjam[barangDipinjam.length - 1])} 

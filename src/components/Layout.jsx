@@ -20,7 +20,7 @@ const Layout = () => {
         console.log('Authentication verified successfully');
       } catch (error) {
         console.error('Failed to verify authentication:', error);
-        navigate('/dashboard');
+        navigate('/');
       }
     };
 
@@ -41,7 +41,8 @@ const Layout = () => {
     if (user && user.id) {
       navigate(`/profile/${user.id}`);
     } else {
-      showSnackbar('User profile not available', 'error');
+      console.error('User ID is undefined');
+      showSnackbar('Unable to view profile. Please try again later.', 'error');
     }
   };
 
@@ -83,9 +84,9 @@ const Layout = () => {
           >
             <FaUser className="text-2xl" />
             <div>
-              <h3 className="text-lg font-semibold">{user?.nama_lengkap || "User Name"}</h3>
-              <p className="text-sm text-gray-400">{user?.role || "Role"}</p>
-              <p className="text-sm text-gray-400">{user?.kelas || "Kelas"}</p>
+              <h3 className="text-lg font-semibold">{user?.nama_lengkap || "Loading..."}</h3>
+              <p className="text-sm text-gray-400">{user?.role || "Loading..."}</p>
+              <p className="text-sm text-gray-400">{user?.kelas || "Loading..."}</p>
             </div>
           </div>
           {showProfileMenu && (
