@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { checkLogin, logOut } from '../features/AuthSlice';
 import { useSnackbar } from '../components/SnackbarProvider';
+import api from "../features/axios";
+import API_URL from "../config/config";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -37,11 +39,20 @@ const Layout = () => {
     }
   };
 
-  const handleViewProfile = () => {
-    if (user && user.id) {
-      navigate(`/profile/${user.id}`);
-    } else {
-      console.error('User ID is undefined');
+  const handleViewProfile = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await api.get(`${API_URL}/users/profile`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.data.status === 'success') {
+        navigate('/profile', { state: { userData: response.data.data } });
+      } else {
+        throw new Error(response.data.message || 'Failed to fetch profile data');
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
       showSnackbar('Unable to view profile. Please try again later.', 'error');
     }
   };
@@ -84,9 +95,7 @@ const Layout = () => {
           >
             <FaUser className="text-2xl" />
             <div>
-              <h3 className="text-lg font-semibold">{user?.nama_lengkap || "Loading..."}</h3>
-              <p className="text-sm text-gray-400">{user?.role || "Loading..."}</p>
-              <p className="text-sm text-gray-400">{user?.kelas || "Loading..."}</p>
+              <h3 className="text-lg font-semibold">{"Profile"}</h3>
             </div>
           </div>
           {showProfileMenu && (

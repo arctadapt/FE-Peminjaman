@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../features/axios';
 import API_URL from '../config/config';
+import { useSnackbar } from '../components/SnackbarProvider';
 
 const Peminjaman = ({ onBorrow }) => {
   const [namaLengkap, setNamaLengkap] = useState('');
@@ -14,6 +15,7 @@ const Peminjaman = ({ onBorrow }) => {
   const [availableItems, setAvailableItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const showSnackbar = useSnackbar();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -47,7 +49,7 @@ const Peminjaman = ({ onBorrow }) => {
     const newHistoryEntry = {
       namaLengkap,
       kelasPeminjam,
-      barangDipinjam: isBarang ? barangDipinjam.join(', ') : `Kelas ${kelasDipinjam} (${jurusan})`,
+      barangDipinjam: isBarang ? barangDipinjam.map(item => `${item.nama_barang} (${item.jumlah_dipinjam})`).join(', ') : `Kelas ${kelasDipinjam} (${jurusan})`,
       isApproved: approvalStatus ? 'Disetujui' : 'Ditolak',
       returned: false, 
     };
@@ -55,27 +57,74 @@ const Peminjaman = ({ onBorrow }) => {
     console.log('New history entry:', newHistoryEntry);
   
     if (isBarang && approvalStatus) {
-      onBorrow(barangDipinjam, newHistoryEntry); 
+      onBorrow(barangDipinjam.map(item => ({ ...item, jumlah: item.jumlah_dipinjam })), newHistoryEntry); 
     } else if (!isBarang && approvalStatus) {
       onBorrow([`Kelas ${kelasDipinjam} (${jurusan})`], newHistoryEntry);
     }
   };
   
   const handleSelectItem = (item) => {
-    if (item.stock > 0) {
+    if (item.jumlah_barang > 0) {
       setBarangDipinjam(prevItems => {
-        if (!prevItems.includes(item.name)) {
-          return [...prevItems, item.name];
+        const existingItem = prevItems.find(i => i.id_barang === item.id_barang);
+        if (existingItem) {
+          return prevItems.map(i => 
+            i.id_barang === item.id_barang 
+              ? { ...i, jumlah_dipinjam: i.jumlah_dipinjam + 1 }
+              : i
+          );
+        } else {
+          return [...prevItems, { ...item, jumlah_dipinjam: 1 }];
         }
-        return prevItems;
       });
+      setAvailableItems(prevItems =>
+        prevItems.map(i =>
+          i.id_barang === item.id_barang
+            ? { ...i, jumlah_barang: i.jumlah_barang - 1 }
+            : i
+        )
+      );
     } else {
-      alert('Barang ini tidak tersedia (stok habis).');
+      showSnackbar('Barang ini tidak tersedia (stok habis).');
     }
   };
 
-  const handleRemoveItem = (itemName) => {
-    setBarangDipinjam(prevItems => prevItems.filter(name => name !== itemName)); 
+  const handleRemoveItem = (itemId) => {
+    setBarangDipinjam(prevItems => {
+      const removedItem = prevItems.find(item => item.id_barang === itemId);
+      if (removedItem) {
+        setAvailableItems(prevAvailable =>
+          prevAvailable.map(item =>
+            item.id_barang === itemId
+              ? { ...item, jumlah_barang: item.jumlah_barang + removedItem.jumlah_dipinjam }
+              : item
+          )
+        );
+      }
+      return prevItems.filter(item => item.id_barang !== itemId);
+    });
+  };
+
+  const handleChangeItemQuantity = (itemId, change) => {
+    setBarangDipinjam(prevItems =>
+      prevItems.map(item => {
+        if (item.id_barang === itemId) {
+          const newQuantity = Math.max(1, item.jumlah_dipinjam + change);
+          const quantityDifference = newQuantity - item.jumlah_dipinjam;
+          
+          setAvailableItems(prevAvailable =>
+            prevAvailable.map(availableItem =>
+              availableItem.id_barang === itemId
+                ? { ...availableItem, jumlah_barang: availableItem.jumlah_barang - quantityDifference }
+                : availableItem
+            )
+          );
+
+          return { ...item, jumlah_dipinjam: newQuantity };
+        }
+        return item;
+      })
+    );
   };
 
   return (
@@ -88,7 +137,7 @@ const Peminjaman = ({ onBorrow }) => {
           value={namaLengkap}
           onChange={(e) => setNamaLengkap(e.target.value)}
           placeholder="Nama Lengkap"
-          className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition duration-200 text-gray-700"
+          className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
         />
 
         <input
@@ -96,20 +145,20 @@ const Peminjaman = ({ onBorrow }) => {
           value={kelasPeminjam}
           onChange={(e) => setKelasPeminjam(e.target.value)}
           placeholder="Kelas dan Jurusan Peminjam"
-          className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition duration-200 text-gray-700"
+          className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
         />
 
         <div className="mb-4">
           <label className="block text-gray-700 text-xl font-bold mb-5">Meminjam Barang atau Kelas?</label>
           <div className="flex justify-center space-x-4">
             <button
-              className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${isBarang === true ? 'bg-teal-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
+              className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${isBarang === true ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
               onClick={() => setIsBarang(true)}
             > 
               Barang
             </button>
             <button
-              className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${isBarang === false ? 'bg-teal-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
+              className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${isBarang === false ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
               onClick={() => setIsBarang(false)}
             >
               Kelas
@@ -129,11 +178,11 @@ const Peminjaman = ({ onBorrow }) => {
                 ) : (
                   <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4">
                     {availableItems.map((item) => (
-                      <li key={item.id_barang} className="flex justify-between items-center mb-2 p-2 hover:bg-teal-200 transition duration-200 rounded-xl">
+                      <li key={item.id_barang} className="flex justify-between items-center mb-2 p-2 hover:bg-blue-200 transition duration-200 rounded-xl">
                         <span className="text-gray-700 font-semibold">{item.nama_barang} (Stok: {item.jumlah_barang})</span>
                         {item.jumlah_barang > 0 ? (
                           <button
-                            className="text-teal-600 hover:underline text-base font-semibold"
+                            className="text-blue-600 hover:underline text-base font-semibold"
                             onClick={() => handleSelectItem(item)}
                           >
                             Pilih
@@ -145,13 +194,37 @@ const Peminjaman = ({ onBorrow }) => {
                     ))}
                   </ul>
                 )}
-                <p className="text-lg mt-2 mb-2 font-semibold text-gray-700">Barang Dipinjam: <span className="text-teal-600">{barangDipinjam.join(', ')}</span></p>
-                <button
-                  onClick={() => handleRemoveItem(barangDipinjam[barangDipinjam.length - 1])} 
-                  className="mt-2 w-full h-11 px-6 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition duration-200"
-                >
-                  Hapus Barang
-                </button>
+                <p className="text-lg mt-2 mb-2 font-semibold text-gray-700">Barang Dipinjam:</p>
+                <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4">
+                  {barangDipinjam.map((item) => (
+                    <li key={item.id_barang} className="flex justify-between items-center mb-2 p-2">
+                      <span className="text-gray-700">{item.nama_barang}</span>
+                      <div className="flex items-center">
+                        <button
+                          onClick={() => handleChangeItemQuantity(item.id_barang, -1)}
+                          className="px-2 py-1 bg-red-500 text-white rounded-l"
+                          disabled={item.jumlah_dipinjam <= 1}
+                        >
+                          -
+                        </button>
+                        <span className="px-3 py-1 bg-gray-200 text-gray-800">{item.jumlah_dipinjam}</span>
+                        <button
+                          onClick={() => handleChangeItemQuantity(item.id_barang, 1)}
+                          className="px-2 py-1 bg-green-500 text-white rounded-r"
+                          disabled={item.jumlah_dipinjam >= availableItems.find(i => i.id_barang === item.id_barang).jumlah_barang + item.jumlah_dipinjam}
+                        >
+                          +
+                        </button>
+                        <button
+                          onClick={() => handleRemoveItem(item.id_barang)}
+                          className="ml-2 px-2 py-1 bg-red-600 text-white rounded"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ) : (
               <>
@@ -160,20 +233,20 @@ const Peminjaman = ({ onBorrow }) => {
                   value={kelasDipinjam}
                   onChange={(e) => setKelasDipinjam(e.target.value)}
                   placeholder="Kelas"
-                  className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition duration-200 text-gray-700"
+                  className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
                 />
                 <input
                   type="text"
                   value={jurusan}
                   onChange={(e) => setJurusan(e.target.value)}
                   placeholder="Jurusan"
-                  className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-400 transition duration-200 text-gray-700"
+                  className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
                 />
               </>
             )}
             <button
               onClick={handleSubmit}
-              className="mt-2 w-full h-11 px-6 py-2 bg-teal-600 text-white rounded-xl hover:bg-teal-700 transition duration-200"
+              className="mt-2 w-full h-11 px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition duration-200"
             >
               Submit
             </button>

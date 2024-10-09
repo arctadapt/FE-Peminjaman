@@ -26,7 +26,7 @@ function App() {
               <Route path="/riwayat" element={<Riwayat />} />
               <Route path="/tersedia" element={<Tersedia />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/profile/:userId" element={<Profile />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
           </Route>
         </Routes>

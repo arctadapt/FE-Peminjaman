@@ -71,16 +71,16 @@ const Tersedia = () => {
         </div>
         
         {/* Kelas Section */}
-        <div className="w-full lg:w-1/2 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-purple-500/20 hover:scale-[1.02]">
-          <h2 className="text-3xl font-bold text-white mb-6 border-b border-purple-500 pb-2">Kelas Tersedia</h2>
+        <div className="w-full lg:w-1/2 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02]">
+          <h2 className="text-3xl font-bold text-white mb-6 border-b border-blue-500 pb-2">Kelas Tersedia</h2>
           {availableClasses.length > 0 ? (
             <ul className="space-y-4">
               {availableClasses.map((kelas) => (
-                <li key={kelas.id_kelas} className="flex justify-between items-center p-4 bg-white bg-opacity-20 shadow-lg rounded-xl transition-all duration-300 hover:bg-opacity-30 hover:shadow-purple-500/30">
+                <li key={kelas.id_kelas} className="flex justify-between items-center p-4 bg-white bg-opacity-20 shadow-lg rounded-xl transition-all duration-300 hover:bg-opacity-30 hover:shadow-blue-500/30">
                   <span className="text-white font-semibold">{kelas.kelas_jurusan}</span>
                   <span className={`font-semibold px-3 py-1 rounded-full ${
                     kelas.status_kelas
-                      ? 'bg-green-500 bg-opacity-20 text-green-300'
+                      ? 'bg-blue-500 bg-opacity-20 text-blue-300'
                       : 'bg-red-500 bg-opacity-20 text-red-300'
                   }`}>
                     Status: {kelas.status_kelas}

@@ -25,8 +25,8 @@ const Dashboard = () => {
       <main className="flex-1 p-6 sm:p-12 bg- bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
           <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">Selamat Datang di Peminjaman Barang</h1>
-            <p className="text-base font-medium sm:text-lg text-gray-300 mb-6 sm:mb-8">Kelola peminjaman barang-barang sekolah dengan mudah dan cepat.</p>
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">Peminjaman Sekolah</h1>
+            <p className="text-base font-medium sm:text-lg text-gray-300 mb-6 sm:mb-8">Kelola peminjaman barang dan kelas sekolah dengan mudah dan cepat.</p>
             <button
               onClick={handleStartBorrowing}
               className="px-6 py-3 sm:px-10 sm:py-4 bg-white text-blue-800 font-bold rounded-2xl shadow-lg hover:bg-gray-300 transition-transform duration-300 transform"
@@ -38,14 +38,14 @@ const Dashboard = () => {
           <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
             {[{
                 title: 'Barang yang Tersedia',
-                description: 'Lacak peminjaman barang-barang yang ada di sekolah.',
+                description: 'Lihat ada barang dan kelas apa saja yang tersedia.',
                 bgClass: 'bg-yellow-500',
                 icon: <FaClipboardList />,
                 path: '/tersedia'
               },
               {
                 title: 'Riwayat Peminjaman',
-                description: 'Lihat riwayat peminjaman barang-barang sekolah.',
+                description: 'Lihat riwayat peminjaman barang dan kelas sekolah.',
                 bgClass: 'bg-teal-600',
                 icon: <FaHistory />,
                 path: '/riwayat' 
