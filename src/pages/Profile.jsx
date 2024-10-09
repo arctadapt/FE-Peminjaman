@@ -14,16 +14,15 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-200">
-      <div className="p-8 max-w-md w-full bg-white-to-br from-blue-100 to-purple-100 rounded-2xl shadow-lg space-y-6">
+    <div className="flex items-center justify-center min-h-screen bg-gray-800">
+      <div className="p-8 max-w-md w-full bg-white rounded-2xl shadow-lg space-y-6">
         <div className="flex flex-col items-center">
           <img
-            className="w-32 h-32 rounded-full border-4 border-grey-800 shadow-md"
+            className="w-32 h-32 rounded border-4 border-gray-100 shadow-md"
             src={avatar}
             alt="Profile Avatar"
           />
           <h1 className="mt-4 text-2xl font-bold text-gray-800">{userData.nama_lengkap}</h1>
-          <p className="text-md text-gray-600 font-semibold">{userData.role}</p>
         </div>
         <div className="bg-gray-200 p-6 rounded-xl shadow-inner space-y-4">
           <div className="flex items-center space-x-3">

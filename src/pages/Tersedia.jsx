@@ -51,37 +51,37 @@ const Tersedia = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-4 sm:p-8">
       <div className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 w-full max-w-7xl">
-        {/* Barang Section remains the same */}
-        <div className="w-full lg:w-1/2 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02]">
-          <h2 className="text-3xl font-bold text-white mb-6 border-b border-blue-500 pb-2">Barang Tersedia</h2>
+        {/* Bagian Barang */}
+        <div className="w-full lg:w-1/2 bg-white shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02] border-2 ">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Barang Tersedia</h2>
           {availableItems.length > 0 ? (
             <ul className="space-y-4">
               {availableItems.map((item) => (
-                <li key={item.id_barang} className="flex justify-between items-center p-4 bg-white bg-opacity-20 shadow-lg rounded-xl transition-all duration-300 hover:bg-opacity-30 hover:shadow-blue-500/30">
-                  <span className="text-white font-semibold">{item.nama_barang}</span>
-                  <span className="text-blue-300 font-semibold px-3 py-1 bg-blue-500 bg-opacity-20 rounded-full">
+                <li key={item.id_barang} className="flex justify-between items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
+                  <span className="text-gray-800 font-semibold">{item.nama_barang}</span>
+                  <span className="text-blue-600 font-semibold px-3 py-1 bg-blue-100 rounded-full border border-blue-300">
                     Stok: {item.jumlah_barang}
                   </span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-gray-300 text-center italic">Tidak ada barang tersedia saat ini.</p>
+            <p className="text-gray-600 text-center italic border border-gray-300 rounded-lg p-4">Tidak ada barang tersedia saat ini.</p>
           )}
         </div>
         
-        {/* Kelas Section */}
-        <div className="w-full lg:w-1/2 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02]">
-          <h2 className="text-3xl font-bold text-white mb-6 border-b border-blue-500 pb-2">Kelas Tersedia</h2>
+        {/* Bagian Kelas */}
+        <div className="w-full lg:w-1/2 bg-white shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02] border-2 ">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Kelas Tersedia</h2>
           {availableClasses.length > 0 ? (
             <ul className="space-y-4">
               {availableClasses.map((kelas) => (
-                <li key={kelas.id_kelas} className="flex justify-between items-center p-4 bg-white bg-opacity-20 shadow-lg rounded-xl transition-all duration-300 hover:bg-opacity-30 hover:shadow-blue-500/30">
-                  <span className="text-white font-semibold">{kelas.kelas_jurusan}</span>
-                  <span className={`font-semibold px-3 py-1 rounded-full ${
+                <li key={kelas.id_kelas} className="flex justify-between items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
+                  <span className="text-gray-800 font-semibold">{kelas.kelas_jurusan}</span>
+                  <span className={`font-semibold px-3 py-1 rounded-full border ${
                     kelas.status_kelas
-                      ? 'bg-blue-500 bg-opacity-20 text-blue-300'
-                      : 'bg-red-500 bg-opacity-20 text-red-300'
+                      ? 'bg-blue-100 text-blue-600 border-blue-300'
+                      : 'bg-red-100 text-red-600 border-red-300'
                   }`}>
                     Status: {kelas.status_kelas}
                   </span>
@@ -89,7 +89,7 @@ const Tersedia = () => {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-300 text-center italic">Tidak ada kelas tersedia saat ini.</p>
+            <p className="text-gray-600 text-center italic border border-gray-300 rounded-lg p-4">Tidak ada kelas tersedia saat ini.</p>
           )}
         </div>
       </div>
