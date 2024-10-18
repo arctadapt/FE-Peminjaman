@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt, FaFileAlt, FaBell } from 'react-icons/fa';
 import { checkLogin, logOut } from '../features/AuthSlice';
 import { useSnackbar } from '../components/SnackbarProvider';
 import api from "../features/axios";
@@ -72,8 +72,9 @@ const Layout = () => {
             {[
               { name: 'Home', icon: <FaHome />, path: '/dashboard' },
               { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman' },
-              { name: 'Riwayat', icon: <FaHistory />, path: '/riwayat' },
-              { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia' },
+              { name: 'History', icon: <FaHistory />, path: '/riwayat' },
+              { name: 'Request', icon: <FaFileAlt />, path: '/request' },
+              { name: 'Notifications', icon: <FaBell />, path: '/listnotifikasi' }
             ].map((item, index) => (
               <li key={index}>
                 <button
