@@ -59,7 +59,11 @@ const Tersedia = () => {
               {availableItems.map((item) => (
                 <li key={item.id_barang} className="flex justify-between items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
                   <span className="text-gray-800 font-semibold">{item.nama_barang}</span>
-                  <span className="text-blue-600 font-semibold px-3 py-1 bg-blue-100 rounded-full border border-blue-300">
+                  <span className={`font-semibold px-3 py-1 rounded-full border ${
+                    item.jumlah_barang > 0
+                      ? 'bg-blue-100 text-blue-600 border-blue-300'
+                      : 'bg-red-100 text-red-600 border-red-300'
+                  }`}>
                     Stok: {item.jumlah_barang}
                   </span>
                 </li>
@@ -79,7 +83,7 @@ const Tersedia = () => {
                 <li key={kelas.id_kelas} className="flex justify-between items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
                   <span className="text-gray-800 font-semibold">{kelas.kelas_jurusan}</span>
                   <span className={`font-semibold px-3 py-1 rounded-full border ${
-                    kelas.status_kelas
+                    kelas.status_kelas === 'Tersedia'
                       ? 'bg-blue-100 text-blue-600 border-blue-300'
                       : 'bg-red-100 text-red-600 border-red-300'
                   }`}>
