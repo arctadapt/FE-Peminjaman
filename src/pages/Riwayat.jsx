@@ -100,42 +100,41 @@ const Riwayat = ({ onReturn }) => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-  {paginatedHistory.map((entry, index) => (
-    <tr 
-      key={index}
-      className="hover:bg-gray-50 transition-colors duration-200"
-    >
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black text-center">
-        {page * rowsPerPage + index + 1}
-      </td>
-      <td className="px-6 py-4 text-sm text-black font-medium">
-        {entry.nama_user}
-      </td>
-      <td className="px-6 py-4 text-sm text-black font-medium">
-        {entry.kelas_user}
-      </td>
-      <td className="px-6 py-4 text-sm text-black font-medium">
-        {entry.nama_barang || '-'}
-      </td>
-      <td className="px-6 py-4 text-sm text-black font-medium">
-        {entry.kelas_pinjaman ? entry.kelas_pinjaman : (entry.status_kelas = '-')}
-      </td>
-      <td className="px-6 py-4 text-sm text-black font-medium text-center">
-        {new Date(entry.tanggal_pinjam).toLocaleDateString()}
-      </td>
-      <td className="px-6 py-4 text-sm text-black font-medium text-center">
-        {entry.tanggal_kembali ? new Date(entry.tanggal_kembali).toLocaleDateString() : '-'}
-      </td>
-      <td className="px-6 py-4 text-sm text-black font-medium text-center">
-        {entry.nama_barang ? entry.status_barang : '-'}
-      </td>
-      <td className="px-6 py-4 text-sm text-black font-medium text-center">
-        {entry.kelas_pinjaman ? entry.status_kelas : '-'}
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+                  {paginatedHistory.map((entry, index) => (
+                    <tr 
+                      key={index}
+                      className="hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black text-center">
+                        {page * rowsPerPage + index + 1}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium">
+                        {entry.nama_user}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium">
+                        {entry.kelas_user}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium">
+                        {entry.nama_barang || '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium">
+                        {entry.kelas_pinjaman ? entry.kelas_pinjaman : (entry.status_kelas = '-')}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium text-center">
+                        {new Date(entry.tanggal_pinjam).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium text-center">
+                        {entry.tanggal_kembali ? new Date(entry.tanggal_kembali).toLocaleDateString() : '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium text-center">
+                        {entry.nama_barang ? entry.status_barang : '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium text-center">
+                        {entry.kelas_pinjaman ? entry.status_kelas : '-'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
             <Pagination
