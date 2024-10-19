@@ -52,13 +52,13 @@ const Tersedia = () => {
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-4 sm:p-8">
       <div className="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 w-full max-w-7xl">
         {/* Bagian Barang */}
-        <div className="w-full lg:w-1/2 bg-white shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02] border-2 ">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Barang Tersedia</h2>
+        <div className="w-full lg:w-1/2 bg-white shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02] border-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Barang Tersedia</h2>
           {availableItems.length > 0 ? (
-            <ul className="space-y-4">
+            <ul className="space-y-4 overflow-y-auto max-h-[60vh]">
               {availableItems.map((item) => (
-                <li key={item.id_barang} className="flex justify-between items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
-                  <span className="text-gray-800 font-semibold">{item.nama_barang}</span>
+                <li key={item.id_barang} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
+                  <span className="text-gray-800 font-semibold mb-2 sm:mb-0">{item.nama_barang}</span>
                   <span className={`font-semibold px-3 py-1 rounded-full border ${
                     item.jumlah_barang > 0
                       ? 'bg-blue-100 text-blue-600 border-blue-300'
@@ -75,13 +75,13 @@ const Tersedia = () => {
         </div>
         
         {/* Bagian Kelas */}
-        <div className="w-full lg:w-1/2 bg-white shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02] border-2 ">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Kelas Tersedia</h2>
+        <div className="w-full lg:w-1/2 bg-white shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02] border-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Kelas Tersedia</h2>
           {availableClasses.length > 0 ? (
-            <ul className="space-y-4">
+            <ul className="space-y-4 overflow-y-auto max-h-[60vh]">
               {availableClasses.map((kelas) => (
-                <li key={kelas.id_kelas} className="flex justify-between items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
-                  <span className="text-gray-800 font-semibold">{kelas.kelas_jurusan}</span>
+                <li key={kelas.id_kelas} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
+                  <span className="text-gray-800 font-semibold mb-2 sm:mb-0">{kelas.kelas_jurusan}</span>
                   <span className={`font-semibold px-3 py-1 rounded-full border ${
                     kelas.status_kelas === 'Tersedia'
                       ? 'bg-blue-100 text-blue-600 border-blue-300'

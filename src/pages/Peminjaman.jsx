@@ -158,11 +158,15 @@ const Peminjaman = () => {
     } else if (type === 'kelas') {
       const isAlreadySelected = kelasDipinjam.some(k => k.id_kelas === item.id_kelas);
       if (isAlreadySelected) {
-        // If already selected, remove it
+        // Jika sudah dipilih, hapus dari daftar
         setKelasDipinjam(prevClasses => prevClasses.filter(k => k.id_kelas !== item.id_kelas));
       } else {
-        // If not selected, add it
-        setKelasDipinjam(prevClasses => [...prevClasses, item]);
+        // Jika belum dipilih, tambahkan ke daftar jika jumlah kelas yang dipinjam kurang dari 2
+        if (kelasDipinjam.length < 2) {
+          setKelasDipinjam(prevClasses => [...prevClasses, item]);
+        } else {
+          showSnackbar('Anda hanya dapat meminjam maksimal 2 kelas', 'warning');
+        }
       }
     }
   };
@@ -217,7 +221,7 @@ const Peminjaman = () => {
   
   return (
     <div className="flex items-center justify-center py-10 min-h-screen flex-col bg-gray-900">
-      <div className="bg-white shadow-lg rounded-3xl p-8 max-w-lg w-full text-center transition-transform duration-300 transform hover:scale-102 border border-gray-300">
+      <div className="bg-white shadow-lg rounded-3xl p-8 max-w-lg w-full text-center transition-transform duration-300 transform hover:scale-102 border border-gray-300 -mt-20">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Peminjaman Barang/Kelas</h1>
 
         <form onSubmit={handleSubmit}>
@@ -327,7 +331,7 @@ const Peminjaman = () => {
 
         {itemType === 'kelas' && (
           <div>
-            <h2 className="text-lg font-semibold mb-2 text-gray-700">Pilih Kelas:</h2>
+            <h2 className="text-lg font-semibold mb-2 text-gray-700">Pilih Kelas (Maksimal 2):</h2>
             {isLoading ? (
               <p className="text-gray-600">Memuat data...</p>
             ) : error ? (
@@ -338,28 +342,29 @@ const Peminjaman = () => {
               <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
                 {availableClasses.map((kelas) => {
                   const isSelected = kelasDipinjam.some(k => k.id_kelas === kelas.id_kelas);
-                  const isAvailable = kelas.status_kelas === 'Ada'; // Asumsikan 'Ada' adalah nilai untuk status tersedia
+                  const isAvailable = kelas.status_kelas === 'Ada';
+                  const isDisabled = !isSelected && kelasDipinjam.length >= 2;
 
                   return (
                     <li 
                       key={kelas.id_kelas} 
                       className={`flex justify-between items-center mb-2 p-2 rounded-xl ${
                         isAvailable 
-                          ? `cursor-pointer transition duration-200 ${isSelected ? 'bg-blue-200' : 'hover:bg-blue-100'}` 
+                          ? `cursor-pointer transition duration-200 ${isSelected ? 'bg-blue-200' : isDisabled ? 'bg-gray-300' : 'hover:bg-blue-100'}` 
                           : 'bg-gray-200'
                       }`}
-                      onClick={() => isAvailable && handleSelectItem(kelas, 'kelas')}
+                      onClick={() => isAvailable && !isDisabled && handleSelectItem(kelas, 'kelas')}
                     >
                       <span className={`font-semibold ${isAvailable ? 'text-gray-700' : 'text-gray-500'}`}>
                         {kelas.kelas_jurusan}
                       </span>
                       <span className={`text-sm ${
                         isAvailable 
-                          ? (isSelected ? 'text-green-600' : 'text-blue-600') 
+                          ? (isSelected ? 'text-green-600' : isDisabled ? 'text-gray-500' : 'text-blue-600') 
                           : 'text-red-500'
                       }`}>
                         {isAvailable 
-                          ? (isSelected ? 'Dipilih' : 'Pilih') 
+                          ? (isSelected ? 'Dipilih' : isDisabled ? 'Batas Tercapai' : 'Pilih') 
                           : 'Tidak Tersedia'
                         }
                       </span>

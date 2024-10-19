@@ -74,6 +74,7 @@ const Layout = () => {
               { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman' },
               { name: 'History', icon: <FaHistory />, path: '/riwayat' },
               { name: 'Request', icon: <FaFileAlt />, path: '/request' },
+              { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia' },
               { name: 'Notifications', icon: <FaBell />, path: '/listnotifikasi' }
             ].map((item, index) => (
               <li key={index}>
@@ -107,13 +108,6 @@ const Layout = () => {
               >
                 <FaUser className="text-xl" />
                 <span>View Profile</span>
-              </button>
-              <button
-                className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition"
-                onClick={() => navigate('/settings')}
-              >
-                <FaCog className="text-xl" />
-                <span>Settings</span>
               </button>
               <button
                 className="flex items-center gap-3 p-2 w-full hover:bg-red-600 rounded-md transition"

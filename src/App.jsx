@@ -9,7 +9,6 @@ import Riwayat from './pages/Riwayat';
 import Tersedia from './pages/Tersedia';
 import Layout from './components/Layout';
 import Profile from './pages/Profile';
-import Settings from './pages/Settings';
 import ProtectedRoute from './components/ProtectedRoute';
 import Request from './pages/Request';
 import ListNotifikasi from './pages/ListNotifikasi';
@@ -28,7 +27,6 @@ function App() {
               <Route path="/peminjaman" element={<Peminjaman />} />
               <Route path="/riwayat" element={<Riwayat />} />
               <Route path="/tersedia" element={<Tersedia />} />
-              <Route path="/settings" element={<Settings />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/request" element={<Request />} />
               <Route path="/listnotifikasi" element={<ListNotifikasi />} />
