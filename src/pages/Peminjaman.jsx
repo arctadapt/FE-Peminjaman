@@ -342,7 +342,7 @@ const Peminjaman = () => {
               <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
                 {availableClasses.map((kelas) => {
                   const isSelected = kelasDipinjam.some(k => k.id_kelas === kelas.id_kelas);
-                  const isAvailable = kelas.status_kelas === 'Ada';
+                  const isAvailable = kelas.status_kelas === 'Tersedia';
                   const isDisabled = !isSelected && kelasDipinjam.length >= 2;
 
                   return (
