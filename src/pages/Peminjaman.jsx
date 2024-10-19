@@ -269,7 +269,7 @@ const Peminjaman = () => {
               ) : error ? (
                 <p className="text-red-500">Error: {error}</p>
               ) : (
-                <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4">
+                <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
                   {availableItems.map((item) => (
                     <li key={item.id_barang} className="flex justify-between items-center mb-2 p-2 hover:bg-blue-200 transition duration-200 rounded-xl">
                       <span className="text-gray-700 font-semibold">{item.nama_barang} (Stok: {item.jumlah_barang})</span>
@@ -289,7 +289,7 @@ const Peminjaman = () => {
                 </ul>
               )}
               <p className="text-lg mt-2 mb-2 font-semibold text-gray-700">Barang Dipinjam:</p>
-              <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4">
+              <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
                 {barangDipinjam.map((item) => (
                   <li key={item.id_barang} className="flex justify-between items-center mb-2 p-2">
                     <span className="text-gray-700">{item.nama_barang}</span>
@@ -335,7 +335,7 @@ const Peminjaman = () => {
             ) : availableClasses.length === 0 ? (
               <p className="text-gray-600">Tidak ada kelas tersedia</p>
             ) : (
-              <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4">
+              <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
                 {availableClasses.map((kelas) => {
                   const isSelected = kelasDipinjam.some(k => k.id_kelas === kelas.id_kelas);
                   const isAvailable = kelas.status_kelas === 'Ada'; // Asumsikan 'Ada' adalah nilai untuk status tersedia
@@ -370,7 +370,7 @@ const Peminjaman = () => {
             )}
             
             <h2 className="text-lg font-semibold mb-2 text-gray-700">Kelas Dipilih:</h2>
-            <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4">
+            <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
               {kelasDipinjam.map((kelas) => (
                 <li 
                   key={kelas.id_kelas} 
