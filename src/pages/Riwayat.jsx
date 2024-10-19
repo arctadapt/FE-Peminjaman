@@ -108,16 +108,16 @@ const Riwayat = ({ onReturn }) => {
                         {page * rowsPerPage + index + 1}
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium">
-                        {entry.id_peminjaman}
+                        {entry.nama_user}
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium">
-                        {entry.nama_user}
+                        {entry.kelas_user}
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium">
                         {entry.nama_barang}
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium">
-                        {entry.kelas_jurusan}
+                        {entry.kelas_pinjaman}
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium text-center">
                         {new Date(entry.tanggal_pinjam).toLocaleDateString()}
@@ -126,19 +126,7 @@ const Riwayat = ({ onReturn }) => {
                         {entry.tanggal_kembali ? new Date(entry.tanggal_kembali).toLocaleDateString() : '-'}
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium text-center">
-                        {entry.status_peminjaman}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black">
-                        <div className="flex space-x-2 justify-center">
-                          {entry.isApproved === 'Disetujui' && !entry.returned && (
-                            <button
-                              onClick={() => onReturn(entry.id_peminjaman)}
-                              className="bg-green-500 text-white px-4 py-2 rounded-md text-xs font-semibold hover:bg-green-600 transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center"
-                            >
-                              Kembalikan
-                            </button>
-                          )}
-                        </div>
+                        {entry.status_pinjam}
                       </td>
                     </tr>
                   ))}
