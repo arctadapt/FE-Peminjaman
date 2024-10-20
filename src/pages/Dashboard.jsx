@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaBell, FaClipboardList, FaFileAlt, FaHistory } from 'react-icons/fa';
+import { FaBell, FaClipboardList, FaFileAlt, FaHistory, FaUndo } from 'react-icons/fa';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -50,6 +50,13 @@ const Dashboard = () => {
       bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
       icon: <FaFileAlt />,
       path: '/request'
+    },
+    {
+      title: 'Pengembalian',
+      description: 'Kembalikan barang dan kelas disini',
+      bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
+      icon: <FaUndo />,
+      path: '/kembali'
     }
   ];
 

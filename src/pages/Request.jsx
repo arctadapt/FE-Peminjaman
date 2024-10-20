@@ -1,44 +1,61 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Pagination from '../components/Pagination';
-import { FaEye } from 'react-icons/fa';
-
-// Data palsu
-const fakeRequests = [
-  { id: 1, officeEmail: 'user1@wgs.com', fullName: 'User Satu', date: '2024-10-08', message: 'Pesan 1' },
-  { id: 2, officeEmail: 'user2@wgs.com', fullName: 'User Dua', date: '2024-10-08', message: 'Pesan 2' },
-  { id: 3, officeEmail: 'user3@wgs.com', fullName: 'User Tiga', date: '2024-10-08', message: 'Pesan 3' },
-  { id: 4, officeEmail: 'user4@wgs.com', fullName: 'User Empat', date: '2024-10-08', message: 'Pesan 4' },
-  { id: 5, officeEmail: 'user5@wgs.com', fullName: 'User Lima', date: '2024-10-08', message: 'Pesan 5' },
-  { id: 6, officeEmail: 'user6@wgs.com', fullName: 'User Enam', date: '2024-10-08', message: 'Pesan 6' },
-  { id: 7, officeEmail: 'user7@wgs.com', fullName: 'User Tujuh', date: '2024-10-08', message: 'Pesan 7' },
-  { id: 8, officeEmail: 'user8@wgs.com', fullName: 'User Delapan', date: '2024-10-08', message: 'Pesan 8' },
-];
+import api from '../features/axios';
+import API_URL from '../config/config';
+import { FaCheck, FaTimes } from 'react-icons/fa';
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
+import { useSnackbar } from "../components/SnackbarProvider";
 
 const Request = () => {
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [openRejectDialog, setOpenRejectDialog] = useState(false);
+  const [rejectReason, setRejectReason] = useState('');
+  const [selectedRequestId, setSelectedRequestId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const showSnackbar = useSnackbar();
 
   const headLabel = useMemo(() => [
     { id: 'no', label: 'No', align: 'center', width: '50px' },
-    { id: 'officeEmail', label: 'Office Email', align: 'left', width: '200px' },
-    { id: 'fullName', label: 'Full Name', align: 'left', width: '200px' },
-    { id: 'date', label: 'Date', align: 'left', width: '150px' },
-    { id: 'message', label: 'Message', align: 'left', width: '250px' },
-    { id: 'action', label: 'Action', align: 'center', width: '100px' },
+    { id: 'nama_user', label: 'Nama Lengkap', align: 'left', width: '200px' },
+    { id: 'kelas_user', label: 'Kelas & Jurusan', align: 'left', width: '200px' },
+    { id: 'barang', label: 'Barang dipinjam', align: 'left', width: '200px' },
+    { id: 'jumlah', label: 'Jumlah Barang', align: 'left', width: '200px' },
+    { id: 'kelas', label: 'Kelas dipinjam', align: 'left', width: '200px' },
+    { id: 'date', label: 'Tanggal', align: 'left', width: '150px' },
+    { id: 'status', label: 'Status', align: 'left', width: '150px' },
+    { id: 'action', label: 'Action', align: 'center', width: '200px' },
   ], []);
 
   useEffect(() => {
-    // Simulasi pengambilan data
-    const fetchRequests = () => {
-      const startIndex = page * rowsPerPage;
-      const endIndex = startIndex + rowsPerPage;
-      const paginatedRequests = fakeRequests.slice(startIndex, endIndex);
-      setRequests(paginatedRequests);
-    };
-
     fetchRequests();
-  }, [page, rowsPerPage]);
+  }, []);
+
+  const fetchRequests = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      const response = await api.get(`${API_URL}/admin/requests`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (Array.isArray(response.data)) {
+        setRequests(response.data);
+      } else if (response.data && Array.isArray(response.data.data)) {
+        setRequests(response.data.data);
+      } else {
+        setRequests([]);
+      }
+    } catch (err) {
+      console.error('Error fetching requests:', err);
+      setError('Gagal mendapatkan permintaan. Silakan coba lagi.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
@@ -48,6 +65,59 @@ const Request = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const handleAccept = async (requestId) => {
+    try {
+      const token = localStorage.getItem('token');
+      await api.post(`${API_URL}/admin/approve/${requestId}`, {}, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      fetchRequests(); // Refresh the list after approval
+      showSnackbar('Permintaan berhasil disetujui!', 'success'); // Show success message
+    } catch (error) {
+      console.error('Error approving request:', error);
+      setError('Gagal menyetujui permintaan. Silakan coba lagi.');
+      showSnackbar('Gagal menyetujui permintaan. Silakan coba lagi.', 'error'); // Show error message
+    }
+  };
+
+  const handleRejectClick = (requestId) => {
+    setSelectedRequestId(requestId);
+    setOpenRejectDialog(true);
+  };
+
+  const handleRejectConfirm = async () => {
+    if (!rejectReason.trim()) {
+      alert('Please provide a reason for rejection.');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      await api.post(`${API_URL}/admin/reject/${selectedRequestId}`, { reason: rejectReason }, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      setOpenRejectDialog(false);
+      setRejectReason('');
+      fetchRequests(); // Refresh the list after rejection
+      showSnackbar('Permintaan berhasil ditolak!', 'success'); // Show success message
+    } catch (error) {
+      console.error('Error rejecting request:', error);
+      setError('Gagal menolak permintaan. Silakan coba lagi.');
+      showSnackbar('Gagal menolak permintaan. Silakan coba lagi.', 'error'); // Show error message
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDialogClose = () => {
+    setOpenRejectDialog(false);
+    setRejectReason('');
+    setSelectedRequestId(null);
+  };
+
+  const paginatedRequests = requests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900">
@@ -67,9 +137,7 @@ const Request = () => {
                       <th
                         key={headCell.id}
                         scope="col"
-                        className={`px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider ${
-                          headCell.align === 'center' ? 'text-center' : ''
-                        }`}
+                        className={`px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider ${headCell.align === 'center' ? 'text-center' : ''}`}
                         style={{ width: headCell.width }}
                       >
                         {headCell.label}
@@ -78,43 +146,62 @@ const Request = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {requests.map((request, index) => (
-                    <tr 
-                      key={request.id}
-                      className="hover:bg-gray-50 transition-colors duration-200"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
-                        {page * rowsPerPage + index + 1}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                        {request.officeEmail}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                        {request.fullName}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                        {request.date}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                        {request.message}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                        <div className="flex space-x-2 justify-center">
-                          <button 
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md text-xs font-semibold hover:bg-blue-600 transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center"
-                          >
-                            <FaEye className="mr-1" /> Detail
-                          </button>
-                        </div>
+                  {/* Display error if any */}
+                  {error ? (
+                    <tr>
+                      <td colSpan={headLabel.length} className="px-6 py-4 text-center text-red-600">
+                        Gagal mendapatkan permintaan. Silakan coba lagi.
                       </td>
                     </tr>
-                  ))}
+                  ) : requests.length === 0 ? (
+                    <tr>
+                      <td colSpan={headLabel.length} className="px-6 py-4 text-center text-gray-500">
+                        Tidak ada data.
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedRequests.map((request, index) => (
+                      <tr key={request.id_request} className="hover:bg-gray-50 transition-colors duration-200">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+                          {page * rowsPerPage + index + 1}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.nama_user}</td>
+                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.kelas_user}</td>
+                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.nama_barang || '-'}</td>
+                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.jumlah_barang || '-'}</td>
+                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.kelas_jurusan || '-'}</td>
+                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{new Date(request.tanggal_pinjam).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.status}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                          <div className="flex space-x-2 justify-center">
+                            {request.status === 'Menunggu' && (
+                              <>
+                                <button 
+                                  onClick={() => handleAccept(request.id_request)}
+                                  className="bg-green-500 text-white px-4 py-2 rounded-md text-xs font-semibold hover:bg-green-600 transition-all duration-200 shadow-md hover:shadow-lg flex items-center"
+                                >
+                                  <FaCheck className="mr-1" /> Setujui
+                                </button>
+                                <button 
+                                  onClick={() => handleRejectClick(request.id_request)} 
+                                  className="bg-red-500 text-white px-4 py-2 rounded-md text-xs font-semibold hover:bg-red-600 transition-all duration-200 shadow-md hover:shadow-lg flex items-center"
+                                >
+                                  <FaTimes className="mr-1" /> Tolak
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
+
             <Pagination
-              count={fakeRequests.length}
               rowsPerPage={rowsPerPage}
+              count={requests.length}
               page={page}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
@@ -122,6 +209,44 @@ const Request = () => {
           </div>
         </div>
       </main>
+
+      {/* Reject dialog */}
+      <Dialog open={openRejectDialog} onClose={handleDialogClose}>
+        <DialogTitle>Reject Request</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Give a reason?"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+          />
+        </DialogContent>
+            <DialogActions
+            sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}
+          >
+            <Button
+              onClick={handleDialogClose}
+              variant="contained"
+              color="error"
+              sx={{ width: '220px' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleRejectConfirm}
+              variant="contained"
+              color="primary"
+              sx={{ width: '220px' }}
+              disabled={isLoading}
+            >
+              Confirm
+            </Button>
+          </DialogActions>
+      </Dialog>
     </div>
   );
 };

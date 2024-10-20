@@ -12,7 +12,7 @@ import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
 import Request from './pages/Request';
 import ListNotifikasi from './pages/ListNotifikasi';
-import DetailNotifikasi from './pages/DetailNotifikasi';
+import Pengembalian from './pages/Pengembalian';
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/request" element={<Request />} />
               <Route path="/listnotifikasi" element={<ListNotifikasi />} />
-              <Route path="/notifications" element={<DetailNotifikasi />} />
+              <Route path="/kembali" element={<Pengembalian />} />
             </Route>
           </Route>
         </Routes>

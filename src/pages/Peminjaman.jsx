@@ -114,7 +114,7 @@ const Peminjaman = () => {
       }
 
       setIsApproved(true);
-      showSnackbar('Peminjaman berhasil!', 'success');
+      showSnackbar('Peminjaman berhasil! Tunggu konfirmasi dari ADMIN', 'success');
       
       // Reset form setelah berhasil
       setNamaLengkap('');

@@ -4,7 +4,9 @@ import API_URL from '../config/config';
 
 const Tersedia = () => {
   const [availableItems, setAvailableItems] = useState([]);
+  const [unavailableItems, setUnavailableItems] = useState([]);
   const [availableClasses, setAvailableClasses] = useState([]);
+  const [unavailableClasses, setUnavailableClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,15 +18,19 @@ const Tersedia = () => {
 
         const [itemsResponse, classesResponse] = await Promise.all([
           api.get(`${API_URL}/items`, { headers }),
-          api.get(`${API_URL}/class`, { headers })
+          api.get(`${API_URL}/class`, { headers }),
         ]);
 
         if (itemsResponse.data.status === 'success') {
-          setAvailableItems(itemsResponse.data.data_barang);
+          const items = itemsResponse.data.data_barang;
+          setAvailableItems(items.filter(item => item.jumlah_barang > 0));
+          setUnavailableItems(items.filter(item => item.jumlah_barang === 0));
         }
 
         if (classesResponse.data.status === 'success') {
-          setAvailableClasses(classesResponse.data.data_class);
+          const classes = classesResponse.data.data_class;
+          setAvailableClasses(classes.filter(kelas => kelas.status_kelas === 'Tersedia'));
+          setUnavailableClasses(classes.filter(kelas => kelas.status_kelas !== 'Tersedia'));
         }
 
         // Log the received data for debugging
@@ -57,13 +63,9 @@ const Tersedia = () => {
           {availableItems.length > 0 ? (
             <ul className="space-y-4 overflow-y-auto max-h-[60vh]">
               {availableItems.map((item) => (
-                <li key={item.id_barang} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
-                  <span className="text-gray-800 font-semibold mb-2 sm:mb-0">{item.nama_barang}</span>
-                  <span className={`font-semibold px-3 py-1 rounded-full border ${
-                    item.jumlah_barang > 0
-                      ? 'bg-blue-100 text-blue-600 border-blue-300'
-                      : 'bg-red-100 text-red-600 border-red-300'
-                  }`}>
+                <li key={item.id_barang} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-blue-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-blue-200 hover:shadow-blue-500/30 border border-blue-300">
+                  <span className="text-blue-800 font-semibold mb-2 sm:mb-0">{item.nama_barang}</span>
+                  <span className={`font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-600`}>
                     Stok: {item.jumlah_barang}
                   </span>
                 </li>
@@ -71,6 +73,23 @@ const Tersedia = () => {
             </ul>
           ) : (
             <p className="text-gray-600 text-center italic border border-gray-300 rounded-lg p-4">Tidak ada barang tersedia saat ini.</p>
+          )}
+          
+          {/* Unavailable Items */}
+          {unavailableItems.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Barang Tidak Tersedia</h3>
+              <ul className="space-y-4">
+                {unavailableItems.map((item) => (
+                  <li key={item.id_barang} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-red-100 shadow-lg rounded-xl border border-red-300">
+                    <span className="text-gray-800 font-semibold mb-2 sm:mb-0">{item.nama_barang}</span>
+                    <span className="font-semibold px-3 py-1 rounded-full text-red-600">
+                      Stok: {item.jumlah_barang}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
         
@@ -80,13 +99,9 @@ const Tersedia = () => {
           {availableClasses.length > 0 ? (
             <ul className="space-y-4 overflow-y-auto max-h-[60vh]">
               {availableClasses.map((kelas) => (
-                <li key={kelas.id_kelas} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-gray-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-blue-500/30 border border-gray-300">
-                  <span className="text-gray-800 font-semibold mb-2 sm:mb-0">{kelas.kelas_jurusan}</span>
-                  <span className={`font-semibold px-3 py-1 rounded-full border ${
-                    kelas.status_kelas === 'Tersedia'
-                      ? 'bg-blue-100 text-blue-600 border-blue-300'
-                      : 'bg-red-100 text-red-600 border-red-300'
-                  }`}>
+                <li key={kelas.id_kelas} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-blue-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-blue-200 hover:shadow-blue-500/30 border border-blue-300">
+                  <span className="text-blue-800 font-semibold mb-2 sm:mb-0">{kelas.kelas_jurusan}</span>
+                  <span className={`font-semibold px-3 py-1 rounded-full bg-blue-100 text-blue-600`}>
                     Status: {kelas.status_kelas}
                   </span>
                 </li>
@@ -94,6 +109,23 @@ const Tersedia = () => {
             </ul>
           ) : (
             <p className="text-gray-600 text-center italic border border-gray-300 rounded-lg p-4">Tidak ada kelas tersedia saat ini.</p>
+          )}
+          
+          {/* Unavailable Classes */}
+          {unavailableClasses.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Kelas Tidak Tersedia</h3>
+              <ul className="space-y-4">
+                {unavailableClasses.map((kelas) => (
+                  <li key={kelas.id_kelas} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-red-100 shadow-lg rounded-xl border border-red-300">
+                    <span className="text-gray-800 font-semibold mb-2 sm:mb-0">{kelas.kelas_jurusan}</span>
+                    <span className="font-semibold px-3 py-1 rounded-full text-red-600">
+                      Status: {kelas.status_kelas}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
       </div>

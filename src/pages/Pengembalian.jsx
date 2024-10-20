@@ -4,8 +4,8 @@ import api from '../features/axios';
 import API_URL from '../config/config';
 import { useSnackbar } from "../components/SnackbarProvider";
 
-const ListNotifications = () => {
-  const [notifications, setNotifications] = useState([]);
+const Pengembalian = () => {
+  const [returns, setReturns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
@@ -14,34 +14,34 @@ const ListNotifications = () => {
 
   const headLabel = useMemo(() => [
     { id: 'no', label: 'No', align: 'center', width: '50px' },
-    { id: 'nama_user', label: 'Nama User', align: 'left', width: '200px' },
-    { id: 'kelas_user', label: 'Kelas User', align: 'left', width: '150px' },
-    { id: 'message', label: 'Pesan', align: 'left', width: '500px' },
-    { id: 'date', label: 'Tanggal', align: 'left', width: '200px' },
-    { id: 'action', label: 'Action', align: 'left', width: '150px' }, // New column for actions
+    { id: 'nama_user', label: 'Nama Peminjam  ', align: 'left', width: '150px' },
+    { id: 'kelas_user', label: 'Kelas Peminjam', align: 'left', width: '150px' },
+    { id: 'nama_barang', label: 'Barang dipinjam', align: 'left', width: '150px' },
+    { id: 'kelas_jurusan', label: 'Kelas dipinjam', align: 'left', width: '200px' },
+    { id: 'status_kembali', label: 'Status Kembali', align: 'left', width: '150px' },
+    { id: 'action', label: 'Action', align: 'center', width: '200px' },  // New Action column
   ], []);
 
   useEffect(() => {
-    fetchNotifications();
+    fetchReturns();
   }, []);
 
-  const fetchNotifications = async () => {
+  const fetchReturns = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await api.get(`${API_URL}/notifications`, {
+      const response = await api.get(`${API_URL}/admin/kembali`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
-      // Set notifications from the response data
-      if (response.data && Array.isArray(response.data.all_notifications)) {
-        setNotifications(response.data.all_notifications);
+      if (Array.isArray(response.data)) {
+        setReturns(response.data);
       } else {
-        setNotifications([]);
+        setReturns([]);
       }
     } catch (err) {
-      console.error('Error fetching notifications:', err);
-      setError('Gagal mendapatkan notifikasi. Silakan coba lagi.');
+      console.error('Error fetching returns:', err);
+      setError('Gagal mendapatkan data pengembalian. Silakan coba lagi.');
     } finally {
       setLoading(false);
     }
@@ -56,40 +56,29 @@ const ListNotifications = () => {
     setPage(0);
   };
 
-  const handleMarkAsRead = async (notificationId) => {
+  const handleReturn = async (idKembali) => {
     try {
       const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId'); // Get userId from local storage or context
-      const endpoint = `${API_URL}/notifications/${notificationId}?userId=${userId}`;
-      const response = await api.put(endpoint, null, {
+      const response = await api.put(`${API_URL}/admin/kembali/${idKembali}`, {}, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-
-      if (response.data && response.data.status === "success") {
-        // Update local state to reflect the change
-        setNotifications(prevNotifications =>
-          prevNotifications.map(notification =>
-            notification.id_notif === notificationId ? { ...notification, is_read: true } : notification
-          )
-        );
-        showSnackbar("Notifikasi telah ditandai sebagai dibaca", "success");
-      } else {
-        showSnackbar("Gagal menandai notifikasi sebagai dibaca", "error");
-      }
+      showSnackbar('Pengembalian berhasil!', 'success');
+      fetchReturns();  // Refresh the data
     } catch (error) {
-      showSnackbar(error.response?.data?.error || error.message || "Terjadi kesalahan saat menandai notifikasi", "error");
+      console.error('Error returning item:', error);
+      showSnackbar('Gagal mengembalikan barang. Silakan coba lagi.', 'error');
     }
-};
+  };
 
-  const paginatedNotifications = notifications.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const paginatedReturns = returns.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-900">
       <main className="flex-1 p-6 sm:p-12 bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
-          <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">List Notifikasi</h1>
-            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat dan kelola notifikasi yang ada di sini.</p>
+          <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12">
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">List Pengembalian</h1>
+            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat dan kelola pengembalian barang di sini.</p>
           </section>
 
           <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-500">
@@ -113,44 +102,43 @@ const ListNotifications = () => {
                   {error ? (
                     <tr>
                       <td colSpan={headLabel.length} className="px-6 py-4 text-center text-red-600">
-                        {error}
+                        Gagal mendapatkan data pengembalian. Silakan coba lagi.
                       </td>
                     </tr>
-                  ) : notifications.length === 0 ? (
+                  ) : returns.length === 0 ? (
                     <tr>
                       <td colSpan={headLabel.length} className="px-6 py-4 text-center text-gray-500">
-                        Tidak ada notifikasi.
+                        Tidak ada data.
                       </td>
                     </tr>
                   ) : (
-                    paginatedNotifications.map((notification, index) => (
-                      <tr key={notification.id_notif} className="hover:bg-gray-50 transition-colors duration-200">
+                    paginatedReturns.map((returnItem, index) => (
+                      <tr key={returnItem.id_kembali} className="hover:bg-gray-50 transition-colors duration-200">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
                           {page * rowsPerPage + index + 1}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                          {notification.nama_user}
+                          {returnItem.nama_user || '-'}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                          {notification.kelas_user}
+                          {returnItem.kelas_user || '-'}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                          {notification.message.length > 100
-                            ? `${notification.message.substring(0, 100)}... lihat selengkapnya di detail`
-                            : notification.message}
+                          {returnItem.nama_barang || '-'}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                          {new Date(notification.created_at).toLocaleDateString()}
+                          {returnItem.kelas_jurusan || '-'}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">
+                          {returnItem.status_kembali}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-center">
                           <button
-                            onClick={() => !notification.is_read && handleMarkAsRead(notification.id_notif)}
-                            className={`${
-                              notification.is_read ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:text-blue-700'
-                            }`}
-                            disabled={notification.is_read}
+                            onClick={() => handleReturn(returnItem.id_kembali)}
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                            disabled={returnItem.status_kembali === 'Sudah Dikembalikan'}
                           >
-                            {notification.is_read ? 'Sudah Dibaca' : 'Tandai Dibaca'}
+                            Kembalikan
                           </button>
                         </td>
                       </tr>
@@ -159,9 +147,10 @@ const ListNotifications = () => {
                 </tbody>
               </table>
             </div>
+
             <Pagination
-              count={notifications.length}
               rowsPerPage={rowsPerPage}
+              count={returns.length}
               page={page}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
@@ -173,4 +162,4 @@ const ListNotifications = () => {
   );
 };
 
-export default ListNotifications;
+export default Pengembalian;
