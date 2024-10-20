@@ -57,6 +57,17 @@ const Layout = () => {
     }
   };
 
+  // Define navigation items with roles
+  const navItems = [
+    { name: 'Home', icon: <FaHome />, path: '/dashboard', roles: ['USER', 'ADMIN', 'SUPER ADMIN'] },
+    { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman', roles: ['USER', 'ADMIN', 'SUPER ADMIN'] },
+    { name: 'List History', icon: <FaHistory />, path: '/riwayat', roles: ['ADMIN', 'SUPER ADMIN'] },
+    { name: 'List Request', icon: <FaFileAlt />, path: '/request', roles: ['ADMIN', 'SUPER ADMIN'] },
+    { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia', roles: ['USER', 'ADMIN', 'SUPER ADMIN'] },
+    { name: 'List Notifications', icon: <FaBell />, path: '/listnotifikasi', roles: ['USER'] },
+    { name: 'Pengembalian', icon: <FaUndo />, path: '/kembali', roles: ['USER'] }
+  ];
+
   return (
     <div className="flex h-screen bg-gray-900 text-gray-200">
       <aside className="w-64 bg-blue-800 text-white p-6 flex flex-col shadow-lg border-r-4 border-blue-500 rounded-r-lg">
@@ -69,25 +80,19 @@ const Layout = () => {
 
         <nav className="flex-grow">
           <ul className="space-y-6">
-            {[
-              { name: 'Home', icon: <FaHome />, path: '/dashboard' },
-              { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman' },
-              { name: 'History', icon: <FaHistory />, path: '/riwayat' },
-              { name: 'Request', icon: <FaFileAlt />, path: '/request' },
-              { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia' },
-              { name: 'Notifications', icon: <FaBell />, path: '/listnotifikasi' },
-              { name: 'Pengembalian', icon: <FaUndo />, path: '/kembali' }
-            ].map((item, index) => (
-              <li key={index}>
-                <button
-                  className="w-full py-4 flex items-center gap-4 text-lg font-medium bg-transparent hover:bg-blue-600 rounded-lg transition-all duration-300 transform hover:scale-105"
-                  onClick={() => navigate(item.path)}
-                >
-                  <div className="text-2xl ml-4">{item.icon}</div>
-                  <span>{item.name}</span>
-                </button>
-              </li>
-            ))}
+            {navItems
+              .filter(item => item.roles.includes(user?.role)) // Filter by user role
+              .map((item, index) => (
+                <li key={index}>
+                  <button
+                    className="w-full py-4 flex items-center gap-4 text-lg font-medium bg-transparent hover:bg-blue-600 rounded-lg transition-all duration-300 transform hover:scale-105"
+                    onClick={() => navigate(item.path)}
+                  >
+                    <div className="text-2xl ml-4">{item.icon}</div>
+                    <span>{item.name}</span>
+                  </button>
+                </li>
+              ))}
           </ul>
         </nav>
 

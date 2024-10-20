@@ -61,12 +61,10 @@ export const logOut = createAsyncThunk("user/logOut", async (_, thunkAPI) => {
                 headers: { Authorization: `Bearer ${token}` }
             });
         }
-        // Hapus token dari localStorage
         localStorage.removeItem('token');
         return null;
     } catch (error) {
         console.error('Logout error:', error);
-        // Tetap hapus token dari localStorage meskipun terjadi error
         localStorage.removeItem('token');
         return null;
     }
@@ -82,7 +80,6 @@ export const authSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        //login
         builder.addCase(LoginUser.pending, (state) => {
             state.isLoading = true;
             state.isError = false;
@@ -94,7 +91,7 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.isSuccess = true;
             state.isError = false;
-            state.user = action.payload.user;
+            state.user = action.payload.user; // Pastikan ini mengambil data user yang benar
             state.token = action.payload.token;
             state.message = 'Login berhasil';
             console.log('Updated auth state:', state);
@@ -108,27 +105,25 @@ export const authSlice = createSlice({
             state.token = null;
         });
 
-        //check
         builder.addCase(checkLogin.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isSuccess = true;
-            state.user = action.payload.user;
+            state.user = action.payload.data;
+            state.token = action.payload.token;
+            console.log('User found in checkLogin:', action.payload.data);
         });
-        builder.addCase(checkLogin.rejected, (state, action) => {
+        builder.addCase(checkLogin.rejected, (state) => {
             state.isLoading = false;
-            state.isError = true;
-            state.message = action.payload;
+            state.isSuccess = false;
             state.user = null;
             state.token = null;
+            console.log('User not found in checkLogin');
         });
 
-        //logout
         builder.addCase(logOut.fulfilled, (state) => {
             state.user = null;
             state.token = null;
             state.isSuccess = false;
-            state.isError = false;
-            state.message = '';
         });
     }
 });
