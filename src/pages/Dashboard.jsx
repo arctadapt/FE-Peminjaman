@@ -6,16 +6,12 @@ import { FaBell, FaClipboardList, FaFileAlt, FaHistory, FaPlus, FaUndo } from 'r
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-  console.log('User state in Dashboard:', user); // Log user state
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('Dashboard: token =', token);
     if (!token) {
-      console.log('No token found, navigating to login');
       navigate('/');
     } else {
-      console.log('Token found, checking user state');
     }
   }, [navigate]);
 
@@ -30,7 +26,7 @@ const Dashboard = () => {
       bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
       icon: <FaClipboardList />,
       path: '/tersedia',
-      roles: ['USER', 'ADMIN', 'SUPER ADMIN'], // Memisahkan role dengan koma
+      roles: ['USER', 'ADMIN', 'SUPER ADMIN'], 
     },
     {
       title: 'Notifikasi',
@@ -38,7 +34,7 @@ const Dashboard = () => {
       bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
       icon: <FaBell />,
       path: '/listnotifikasi',
-      roles: ['USER'], // Menentukan role
+      roles: ['USER'], 
     },
     {
       title: 'Riwayat Peminjaman',
@@ -46,7 +42,7 @@ const Dashboard = () => {
       bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
       icon: <FaHistory />,
       path: '/riwayat',
-      roles: ['ADMIN', 'SUPER ADMIN'], // Menentukan role
+      roles: ['ADMIN', 'SUPER ADMIN'], 
     },
     {
       title: 'Permintaan Barang dan Kelas',
@@ -54,7 +50,7 @@ const Dashboard = () => {
       bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
       icon: <FaFileAlt />,
       path: '/request',
-      roles: ['ADMIN', 'SUPER ADMIN'], // Menentukan role
+      roles: ['ADMIN', 'SUPER ADMIN'], 
     },
     {
       title: 'Pengembalian',
@@ -62,7 +58,7 @@ const Dashboard = () => {
       bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
       icon: <FaUndo />,
       path: '/kembali',
-      roles: ['USER'], // Menentukan role
+      roles: ['USER'], 
     },
     {
       title: 'Tambah Barang/Kelas',
@@ -70,7 +66,7 @@ const Dashboard = () => {
       bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
       icon: <FaPlus />,
       path: '/kembali',
-      roles: ['ADMIN', 'SUPER ADMIN'], // Menentukan role
+      roles: ['ADMIN', 'SUPER ADMIN'], 
     }
   ];
 
@@ -83,12 +79,15 @@ const Dashboard = () => {
               <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
                 <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">Peminjaman Sekolah</h1>
                 <p className="text-base font-medium sm:text-lg text-gray-300 mb-6 sm:mb-8">Kelola peminjaman barang dan kelas sekolah dengan mudah dan cepat.</p>
-                <button
-                  onClick={handleStartBorrowing}
-                  className="px-6 py-3 sm:px-10 sm:py-4 bg-white text-blue-800 font-bold rounded-2xl shadow-lg hover:bg-gray-300 transition-transform duration-300 transform"
-                >
-                  Mulai Meminjam
-                </button>
+                
+                {user.role === 'USER' && ( // Menampilkan tombol hanya jika role adalah USER
+                  <button
+                    onClick={handleStartBorrowing}
+                    className="px-6 py-3 sm:px-10 sm:py-4 bg-white text-blue-800 font-bold rounded-2xl shadow-lg hover:bg-gray-300 transition-transform duration-300 transform"
+                  >
+                    Mulai Meminjam
+                  </button>
+                )}
               </section>
 
               <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
@@ -111,7 +110,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   )
-                ))}
+                ))} 
               </section>
             </>
           ) : (

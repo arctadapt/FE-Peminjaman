@@ -29,7 +29,7 @@ const Riwayat = ({ onReturn }) => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-        console.log('API Response:', response.data);
+        
         if (response.data.status === 'success') {
           setHistory(response.data.data);
         } else {

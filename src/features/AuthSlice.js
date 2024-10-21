@@ -13,12 +13,10 @@ const initialState = {
 
 export const LoginUser = createAsyncThunk("user/LoginUser", async (user, thunkAPI) => {
     try {
-        console.log('LoginUser thunk called with:', user);
         const response = await api.post(`${API_URL}/auth/login`, {
             nama_lengkap: user.nama_lengkap,
             password: user.password
         });
-        console.log('Login response:', response.data);
         if (response.data && response.data.token) {
             localStorage.setItem('token', response.data.token);
             return {
@@ -87,14 +85,12 @@ export const authSlice = createSlice({
             state.message = '';
         });
         builder.addCase(LoginUser.fulfilled, (state, action) => {
-            console.log('LoginUser.fulfilled payload:', action.payload);
             state.isLoading = false;
             state.isSuccess = true;
             state.isError = false;
             state.user = action.payload.user; // Pastikan ini mengambil data user yang benar
             state.token = action.payload.token;
             state.message = 'Login berhasil';
-            console.log('Updated auth state:', state);
         });
         builder.addCase(LoginUser.rejected, (state, action) => {
             state.isLoading = false;
@@ -110,14 +106,12 @@ export const authSlice = createSlice({
             state.isSuccess = true;
             state.user = action.payload.data;
             state.token = action.payload.token;
-            console.log('User found in checkLogin:', action.payload.data);
         });
         builder.addCase(checkLogin.rejected, (state) => {
             state.isLoading = false;
             state.isSuccess = false;
             state.user = null;
             state.token = null;
-            console.log('User not found in checkLogin');
         });
 
         builder.addCase(logOut.fulfilled, (state) => {
