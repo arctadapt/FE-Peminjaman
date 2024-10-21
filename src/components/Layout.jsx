@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt, FaFileAlt, FaBell, FaUndo } from 'react-icons/fa';
+import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt, FaFileAlt, FaBell, FaUndo, FaPlus } from 'react-icons/fa';
 import { checkLogin, logOut } from '../features/AuthSlice';
 import { useSnackbar } from '../components/SnackbarProvider';
 import api from "../features/axios";
@@ -65,7 +65,8 @@ const Layout = () => {
     { name: 'List Request', icon: <FaFileAlt />, path: '/request', roles: ['ADMIN', 'SUPER ADMIN'] },
     { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia', roles: ['USER', 'ADMIN', 'SUPER ADMIN'] },
     { name: 'List Notifications', icon: <FaBell />, path: '/listnotifikasi', roles: ['USER'] },
-    { name: 'Pengembalian', icon: <FaUndo />, path: '/kembali', roles: ['USER'] }
+    { name: 'Pengembalian', icon: <FaUndo />, path: '/kembali', roles: ['USER'] },
+    { name: 'Form Tambah', icon: <FaPlus />, path: '/tambah', roles: ['ADMIN', 'SUPER ADMIN'] }
   ];
 
   return (

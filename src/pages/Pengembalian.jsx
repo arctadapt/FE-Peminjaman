@@ -41,7 +41,6 @@ const Pengembalian = () => {
       }
     } catch (err) {
       console.error('Error fetching returns:', err);
-      setError('Gagal mendapatkan data pengembalian. Silakan coba lagi.');
     } finally {
       setLoading(false);
     }

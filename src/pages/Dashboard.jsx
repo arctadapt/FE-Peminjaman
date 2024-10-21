@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaBell, FaClipboardList, FaFileAlt, FaHistory, FaUndo } from 'react-icons/fa';
+import { FaBell, FaClipboardList, FaFileAlt, FaHistory, FaPlus, FaUndo } from 'react-icons/fa';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -63,6 +63,14 @@ const Dashboard = () => {
       icon: <FaUndo />,
       path: '/kembali',
       roles: ['USER'], // Menentukan role
+    },
+    {
+      title: 'Tambah Barang/Kelas',
+      description: 'Tambahkan barang dan kelas disini',
+      bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
+      icon: <FaPlus />,
+      path: '/kembali',
+      roles: ['ADMIN', 'SUPER ADMIN'], // Menentukan role
     }
   ];
 

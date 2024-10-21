@@ -13,6 +13,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Request from './pages/Request';
 import ListNotifikasi from './pages/ListNotifikasi';
 import Pengembalian from './pages/Pengembalian';
+import AddForm from './pages/Tambah';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               <Route path="/request" element={<Request />} />
               <Route path="/listnotifikasi" element={<ListNotifikasi />} />
               <Route path="/kembali" element={<Pengembalian />} />
+              <Route path="/tambah" element={<AddForm />} />
             </Route>
           </Route>
         </Routes>
