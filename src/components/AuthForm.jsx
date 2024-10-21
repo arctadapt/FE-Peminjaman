@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaLock, FaUser, FaPhone, FaEye, FaEyeSlash, FaRegBuilding } from 'react-icons/fa';
+import { FaUser, FaEye, FaEyeSlash, FaRegBuilding } from 'react-icons/fa';
 
 const AuthForm = ({ isLogin, onSubmit }) => {
   const [kelas, setKelas] = useState('');
@@ -27,9 +27,9 @@ const AuthForm = ({ isLogin, onSubmit }) => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#0071aa]">
+    <div className="flex justify-center items-center min-h-screen bg-[#0F67B1]">
       <div className="w-full max-w-lg p-8 bg-gradient-to-r from-white to-gray-200 rounded-3xl shadow-lg">
-        <img className="w-50 h-50 mx-auto -mt-28 mb-11 rounded-full bg-[#0071aa]" src='/public/unnamed.png' alt=''></img>
+        <img className="w-50 h-50 mx-auto -mt-28 mb-11 rounded-full bg-[#0F67B1]" src='/public/unnamed.png' alt=''></img>
         <h2 className="text-2xl font-bold text-center mb-7 text-gradient"> 
           {isLogin ? 'Login' : 'Register'}
         </h2>
@@ -81,7 +81,7 @@ const AuthForm = ({ isLogin, onSubmit }) => {
             </div>
           </div>
 
-          <button type="submit" className="w-full py-3 bg-[#00b1dd] text-white font-bold rounded-2xl hover:bg-blue-700 transition duration-300">
+          <button type="submit" className="w-full py-3 bg-[#0F67B1] text-white font-bold rounded-2xl hover:bg-blue-700 transition duration-300">
             {isLogin ? 'Login' : 'Register'}
           </button>
         </form>
