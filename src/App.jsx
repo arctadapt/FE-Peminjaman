@@ -14,6 +14,7 @@ import Request from './pages/Request';
 import ListNotifikasi from './pages/ListNotifikasi';
 import Pengembalian from './pages/Pengembalian';
 import AddForm from './pages/Tambah';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route path="/listnotifikasi" element={<ListNotifikasi />} />
               <Route path="/kembali" element={<Pengembalian />} />
               <Route path="/tambah" element={<AddForm />} />
+              <Route path="/admin" element={<Admin />} />
             </Route>
           </Route>
         </Routes>

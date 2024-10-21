@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaCog, FaSignOutAlt, FaFileAlt, FaBell, FaUndo, FaPlus } from 'react-icons/fa';
+import { FaHome, FaClipboardList, FaBoxOpen, FaHistory, FaUser, FaSignOutAlt, FaFileAlt, FaBell, FaUndo, FaUserPlus } from 'react-icons/fa';
+import { FaFileCirclePlus } from "react-icons/fa6";
 import { checkLogin, logOut } from '../features/AuthSlice';
 import { useSnackbar } from '../components/SnackbarProvider';
 import api from "../features/axios";
@@ -60,13 +61,14 @@ const Layout = () => {
   // Define navigation items with roles
   const navItems = [
     { name: 'Home', icon: <FaHome />, path: '/dashboard', roles: ['USER', 'ADMIN', 'SUPER ADMIN'] },
-    { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman', roles: ['USER', 'ADMIN', 'SUPER ADMIN'] },
+    { name: 'Add Admin', icon: <FaUserPlus />, path: '/admin', roles: ['ADMIN', 'SUPER ADMIN'] },
+    { name: 'Peminjaman', icon: <FaBoxOpen />, path: '/peminjaman', roles: ['USER'] },
     { name: 'List History', icon: <FaHistory />, path: '/riwayat', roles: ['ADMIN', 'SUPER ADMIN'] },
     { name: 'List Request', icon: <FaFileAlt />, path: '/request', roles: ['ADMIN', 'SUPER ADMIN'] },
     { name: 'Tersedia', icon: <FaClipboardList />, path: '/tersedia', roles: ['USER', 'ADMIN', 'SUPER ADMIN'] },
     { name: 'List Notifications', icon: <FaBell />, path: '/listnotifikasi', roles: ['USER'] },
     { name: 'Pengembalian', icon: <FaUndo />, path: '/kembali', roles: ['USER'] },
-    { name: 'Form Tambah', icon: <FaPlus />, path: '/tambah', roles: ['ADMIN', 'SUPER ADMIN'] }
+    { name: 'Form Tambah', icon: <FaFileCirclePlus />, path: '/tambah', roles: ['ADMIN', 'SUPER ADMIN'] },
   ];
 
   return (
