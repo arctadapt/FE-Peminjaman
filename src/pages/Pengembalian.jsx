@@ -19,7 +19,7 @@ const Pengembalian = () => {
     { id: 'nama_barang', label: 'Barang dipinjam', align: 'left', width: '150px' },
     { id: 'kelas_jurusan', label: 'Kelas dipinjam', align: 'left', width: '200px' },
     { id: 'status_kembali', label: 'Status Kembali', align: 'left', width: '150px' },
-    { id: 'action', label: 'Action', align: 'center', width: '200px' },  // New Action column
+    { id: 'action', label: 'Action', align: 'center', width: '200px' },
   ], []);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const Pengembalian = () => {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       showSnackbar('Pengembalian berhasil!', 'success');
-      fetchReturns();  // Refresh the data
+      fetchReturns();
     } catch (error) {
       console.error('Error returning item:', error);
       showSnackbar('Gagal mengembalikan barang. Silakan coba lagi.', 'error');

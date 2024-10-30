@@ -10,7 +10,7 @@ const Tersedia = () => {
   const [error, setError] = useState(null);
   const [kelasFilter, setKelasFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('available');
-  const [sortOrder, setSortOrder] = useState('asc'); // New state for sorting order
+  const [sortOrder, setSortOrder] = useState('asc');
 
   useEffect(() => {
     const fetchData = async () => {

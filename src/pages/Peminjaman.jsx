@@ -53,7 +53,6 @@ const Peminjaman = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validasi nama dan kelas
     if (!namaLengkap.trim()) {
       showSnackbar('Mohon masukkan nama lengkap Anda', 'error');
       return;
@@ -64,7 +63,6 @@ const Peminjaman = () => {
       return;
     }
 
-    // Validasi pemilihan barang atau kelas
     if (itemType === 'barang' && barangDipinjam.length === 0) {
       showSnackbar('Mohon pilih setidaknya satu barang untuk dipinjam', 'error');
       return;
@@ -115,8 +113,7 @@ const Peminjaman = () => {
 
       setIsApproved(true);
       showSnackbar('Peminjaman berhasil! Tunggu konfirmasi dari ADMIN', 'success');
-      
-      // Reset form setelah berhasil
+
       setNamaLengkap('');
       setKelasPeminjam('');
       setBarangDipinjam([]);
@@ -135,7 +132,6 @@ const Peminjaman = () => {
     if (type === 'barang') {
       const existingItem = barangDipinjam.find(b => b.id_barang === item.id_barang);
       if (existingItem) {
-        // Jika barang sudah ada, tambahkan jumlahnya
         setBarangDipinjam(prevItems =>
           prevItems.map(b =>
             b.id_barang === item.id_barang
@@ -144,10 +140,8 @@ const Peminjaman = () => {
           )
         );
       } else {
-        // Jika barang belum ada, tambahkan ke daftar
         setBarangDipinjam(prevItems => [...prevItems, { ...item, jumlah_dipinjam: 1 }]);
       }
-      // Kurangi jumlah barang yang tersedia
       setAvailableItems(prevItems =>
         prevItems.map(b =>
           b.id_barang === item.id_barang
@@ -158,10 +152,8 @@ const Peminjaman = () => {
     } else if (type === 'kelas') {
       const isAlreadySelected = kelasDipinjam.some(k => k.id_kelas === item.id_kelas);
       if (isAlreadySelected) {
-        // Jika sudah dipilih, hapus dari daftar
         setKelasDipinjam(prevClasses => prevClasses.filter(k => k.id_kelas !== item.id_kelas));
       } else {
-        // Jika belum dipilih, tambahkan ke daftar jika jumlah kelas yang dipinjam kurang dari 2
         if (kelasDipinjam.length < 2) {
           setKelasDipinjam(prevClasses => [...prevClasses, item]);
         } else {

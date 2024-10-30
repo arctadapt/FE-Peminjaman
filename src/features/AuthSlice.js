@@ -88,7 +88,7 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.isSuccess = true;
             state.isError = false;
-            state.user = action.payload.user; // Pastikan ini mengambil data user yang benar
+            state.user = action.payload.user;
             state.token = action.payload.token;
             state.message = 'Login berhasil';
         });

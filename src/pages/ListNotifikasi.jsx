@@ -18,7 +18,7 @@ const ListNotifications = () => {
     { id: 'kelas_user', label: 'Kelas User', align: 'left', width: '150px' },
     { id: 'message', label: 'Pesan', align: 'left', width: '500px' },
     { id: 'date', label: 'Tanggal', align: 'left', width: '200px' },
-    { id: 'action', label: 'Action', align: 'left', width: '150px' }, // New column for actions
+    { id: 'action', label: 'Action', align: 'left', width: '150px' },
   ], []);
 
   useEffect(() => {
@@ -33,7 +33,6 @@ const ListNotifications = () => {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
-      // Set notifications from the response data
       if (response.data && Array.isArray(response.data.all_notifications)) {
         setNotifications(response.data.all_notifications);
       } else {
@@ -59,14 +58,13 @@ const ListNotifications = () => {
   const handleMarkAsRead = async (notificationId) => {
     try {
       const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId'); // Get userId from local storage or context
+      const userId = localStorage.getItem('userId');
       const endpoint = `${API_URL}/notifications/${notificationId}?userId=${userId}`;
       const response = await api.put(endpoint, null, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
       if (response.data && response.data.status === "success") {
-        // Update local state to reflect the change
         setNotifications(prevNotifications =>
           prevNotifications.map(notification =>
             notification.id_notif === notificationId ? { ...notification, is_read: true } : notification

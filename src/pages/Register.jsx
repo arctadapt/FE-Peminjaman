@@ -16,13 +16,11 @@ const Register = () => {
         password,
       });
 
-      // Tampilkan notifikasi keberhasilan dengan warna hijau
-      showSnackbar(response.data.message, 'success'); // Use 'success' type
-      setError(null); // Clear error if registration is successful
+      showSnackbar(response.data.message, 'success');
+      setError(null);
     } catch (error) {
-      // Tampilkan notifikasi kesalahan dengan warna merah
-      showSnackbar(error.response?.data?.message || 'Terjadi kesalahan saat registrasi', 'error'); // Use 'error' type
-      setError(''); // Clear error state
+      showSnackbar(error.response?.data?.message || 'Terjadi kesalahan saat registrasi', 'error');
+      setError('');
     }
   };
 

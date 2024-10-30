@@ -72,12 +72,12 @@ const Request = () => {
       await api.post(`${API_URL}/admin/approve/${requestId}`, {}, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      fetchRequests(); // Refresh the list after approval
-      showSnackbar('Permintaan berhasil disetujui!', 'success'); // Show success message
+      fetchRequests();
+      showSnackbar('Permintaan berhasil disetujui!', 'success');
     } catch (error) {
       console.error('Error approving request:', error);
       setError('Gagal menyetujui permintaan. Silakan coba lagi.');
-      showSnackbar('Gagal menyetujui permintaan. Silakan coba lagi.', 'error'); // Show error message
+      showSnackbar('Gagal menyetujui permintaan. Silakan coba lagi.', 'error');
     }
   };
 
@@ -100,12 +100,12 @@ const Request = () => {
       });
       setOpenRejectDialog(false);
       setRejectReason('');
-      fetchRequests(); // Refresh the list after rejection
-      showSnackbar('Permintaan berhasil ditolak!', 'success'); // Show success message
+      fetchRequests();
+      showSnackbar('Permintaan berhasil ditolak!', 'success');
     } catch (error) {
       console.error('Error rejecting request:', error);
       setError('Gagal menolak permintaan. Silakan coba lagi.');
-      showSnackbar('Gagal menolak permintaan. Silakan coba lagi.', 'error'); // Show error message
+      showSnackbar('Gagal menolak permintaan. Silakan coba lagi.', 'error');
     } finally {
       setIsLoading(false);
     }

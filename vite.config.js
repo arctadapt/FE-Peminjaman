@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {  port: 3000 },
     proxy: {
-      '/auth': 'http://localhost:3001',  // Proxy endpoint /auth ke backend
+      '/auth': 'http://localhost:3001',
     },
   },
 );

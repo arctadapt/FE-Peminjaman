@@ -18,12 +18,12 @@ const Pagination = ({
         justifyContent: "center",
         mt: 2,
         width: '100%',
-        overflowX: isMobile ? 'auto' : 'hidden', // Enable horizontal scrolling on mobile
+        overflowX: isMobile ? 'auto' : 'hidden',
         '&::-webkit-scrollbar': {
           display: 'none',
         },
-        scrollbarWidth: 'none', // Hide scrollbar in Firefox
-        msOverflowStyle: 'none', // Hide scrollbar in IE and Edge
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
       }}
     >
       <TablePagination
@@ -38,9 +38,9 @@ const Pagination = ({
         showLastButton
         sx={{
           display: 'flex',
-          justifyContent: isMobile ? 'flex-start' : 'center', // Center on desktop, start on mobile
+          justifyContent: isMobile ? 'flex-start' : 'center',
           alignItems: 'center',
-          maxWidth: isMobile ? '82vw' : '100%', // Ensure scrollable width on mobile
+          maxWidth: isMobile ? '82vw' : '100%',
           '& .MuiTablePagination-toolbar': {
             justifyContent: isMobile ? 'flex-start' : 'center',
             width: '100%',

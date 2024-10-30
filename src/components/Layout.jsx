@@ -56,7 +56,6 @@ const Layout = () => {
     }
   };
 
-  // Define navigation items with roles
   const navItems = [
     { name: 'Home', icon: <FaHome />, path: '/dashboard', roles: ['USER', 'ADMIN', 'SUPER ADMIN'] },
     { name: 'Add Admin', icon: <FaUserPlus />, path: '/admin', roles: ['ADMIN', 'SUPER ADMIN'] },
@@ -82,7 +81,7 @@ const Layout = () => {
         <nav className="flex-grow">
           <ul className="space-y-6">
             {navItems
-              .filter(item => item.roles.includes(user?.role)) // Filter by user role
+              .filter(item => item.roles.includes(user?.role))
               .map((item, index) => (
                 <li key={index}>
                   <button

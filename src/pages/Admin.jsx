@@ -13,7 +13,6 @@ const Admin = () => {
   const handleAdmin = async (e) => {
     e.preventDefault();
 
-    // Validasi input
     if (!namaLengkap.trim() || !kelas.trim() || !password.trim()) {
       showSnackbar('Semua field harus diisi', 'error');
       return;
@@ -30,7 +29,6 @@ const Admin = () => {
 
       showSnackbar(response.data.message, 'success');
       
-      // Reset form setelah berhasil
       setNamaLengkap('');
       setKelas('');
       setPassword('');

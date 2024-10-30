@@ -80,7 +80,7 @@ const Dashboard = () => {
                 <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">Peminjaman Sekolah</h1>
                 <p className="text-base font-medium sm:text-lg text-gray-300 mb-6 sm:mb-8">Kelola peminjaman barang dan kelas sekolah dengan mudah dan cepat.</p>
                 
-                {user.role === 'USER' && ( // Menampilkan tombol hanya jika role adalah USER
+                {user.role === 'USER' && (
                   <button
                     onClick={handleStartBorrowing}
                     className="px-6 py-3 sm:px-10 sm:py-4 bg-white text-blue-800 font-bold rounded-2xl shadow-lg hover:bg-gray-300 transition-transform duration-300 transform"
@@ -92,7 +92,7 @@ const Dashboard = () => {
 
               <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
                 {dashboardCards.map((card, index) => (
-                  (!card.roles || (user && card.roles.some(role => role === user.role))) && ( // Periksa role
+                  (!card.roles || (user && card.roles.some(role => role === user.role))) && (
                     <div
                       key={index}
                       className={`p-6 sm:p-8 ${card.bgClass} rounded-3xl shadow-xl transition-transform transform hover:scale-105 hover:shadow-2xl hover:-translate-y-2 border-4 border-white border-opacity-30 cursor-pointer`}
@@ -114,7 +114,7 @@ const Dashboard = () => {
               </section>
             </>
           ) : (
-            <p className="text-white">Loading...</p> // Placeholder jika user belum dimuat
+            <p className="text-white">Loading...</p>
           )}
         </div>
       </main>

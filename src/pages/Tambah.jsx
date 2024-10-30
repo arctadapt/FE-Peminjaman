@@ -19,7 +19,7 @@ const AddForm = () => {
       const headers = { Authorization: `Bearer ${token}` };
       const payload = type === 'barang'
         ? { nama_barang, jumlah_barang: parseInt(jumlah) }
-        : { kelas_jurusan: kelas_jurusan, status_kelas: 'Tersedia' }; // Status kelas di-set otomatis
+        : { kelas_jurusan: kelas_jurusan, status_kelas: 'Tersedia' };
 
       const response = await api.post(`${API_URL}/peminjaman/${type}`, payload, { headers });
 

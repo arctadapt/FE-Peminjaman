@@ -43,8 +43,8 @@ const SnackbarProvider = ({ children }) => {
           onClose={handleClose}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
           sx={{
-            maxWidth: isMobile ? "100%" : "100%", // Lebar lebih kecil pada mobile
-            mt: isMobile ? 7 : 3, // Margin atas lebih kecil pada mobile
+            maxWidth: isMobile ? "100%" : "100%",
+            mt: isMobile ? 7 : 3,
           }}
         >
           <Alert
@@ -52,7 +52,7 @@ const SnackbarProvider = ({ children }) => {
             severity={snackbar.severity}
             sx={{
               width: isMobile ? "80%": "100%",
-              fontSize: isMobile ? "0.75rem" : "1rem", // Ukuran font lebih kecil pada mobile
+              fontSize: isMobile ? "0.75rem" : "1rem",
             }}
           >
             {snackbar.message}
