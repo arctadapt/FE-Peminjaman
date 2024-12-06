@@ -8,7 +8,7 @@ const Peminjaman = () => {
   const [kelasPeminjam, setKelasPeminjam] = useState('');
   const [itemType, setItemType] = useState(null);
   const [barangDipinjam, setBarangDipinjam] = useState([]);
-  const [kelasDipinjam, setKelasDipinjam] = useState([]);
+  const [RuanganDipinjam, setRuanganDipinjam] = useState([]);
   const [isApproved, setIsApproved] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [availableItems, setAvailableItems] = useState([]);
@@ -29,9 +29,13 @@ const Peminjaman = () => {
         ]);
 
         if (classesResponse.data.status === 'success') {
-          setAvailableClasses(classesResponse.data.data_class || []);
+          // Filter hanya ruangan yang tersedia
+          const availableRooms = classesResponse.data.data_class.filter(
+            ruangan => ruangan.status_ruangan === 'Tersedia'
+          );
+          setAvailableClasses(availableRooms || []);
         } else {
-          throw new Error(classesResponse.data.message || 'Gagal mengambil data kelas');
+          throw new Error(classesResponse.data.message || 'Gagal mengambil data ruangan');
         }
 
         if (itemsResponse.data.status === 'success') {
@@ -63,17 +67,20 @@ const Peminjaman = () => {
       return;
     }
 
+    // Validasi untuk peminjaman barang
     if (itemType === 'barang' && barangDipinjam.length === 0) {
       showSnackbar('Mohon pilih setidaknya satu barang untuk dipinjam', 'error');
       return;
     }
 
-    if (itemType === 'kelas' && kelasDipinjam.length === 0) {
-      showSnackbar('Mohon pilih setidaknya satu kelas untuk dipinjam', 'error');
+    // Validasi untuk peminjaman ruangan
+    if (itemType === 'ruangan' && RuanganDipinjam.length === 0) {
+      showSnackbar('Mohon pilih setidaknya satu ruangan untuk dipinjam', 'error');
       return;
     }
 
     setSubmitted(true);
+    setIsApproved(null);
 
     try {
       const token = localStorage.getItem('token');
@@ -94,17 +101,17 @@ const Peminjaman = () => {
             throw new Error(response.data.message || 'Peminjaman barang gagal');
           }
         }
-      } else if (itemType === 'kelas') {
-        for (const kelas of kelasDipinjam) {
+      } else if (itemType === 'ruangan') {
+        for (const ruangan of RuanganDipinjam) {
           response = await api.post(`${API_URL}/peminjaman/class`, {
-            id_kelas: kelas.id_kelas,
+            id_ruangan: ruangan.id_ruangan,
             status: true,
             nama_peminjam: namaLengkap,
             kelas_peminjam: kelasPeminjam
           }, { headers });
 
           if (response.data.status !== 'success') {
-            throw new Error(response.data.message || 'Peminjaman kelas gagal');
+            throw new Error(response.data.message || 'Peminjaman ruangan gagal');
           }
         }
       } else {
@@ -114,17 +121,18 @@ const Peminjaman = () => {
       setIsApproved(true);
       showSnackbar('Peminjaman berhasil! Tunggu konfirmasi dari ADMIN', 'success');
 
+      // Reset form
       setNamaLengkap('');
       setKelasPeminjam('');
       setBarangDipinjam([]);
-      setKelasDipinjam([]);
+      setRuanganDipinjam([]);
       setItemType(null);
     } catch (error) {
       console.error('Error in borrowing:', error);
       setIsApproved(false);
       showSnackbar(error.message || 'Terjadi kesalahan saat meminjam', 'error');
     } finally {
-      setSubmitted(false);
+      setSubmitted(true);
     }
   };
 
@@ -149,15 +157,15 @@ const Peminjaman = () => {
             : b
         )
       );
-    } else if (type === 'kelas') {
-      const isAlreadySelected = kelasDipinjam.some(k => k.id_kelas === item.id_kelas);
+    } else if (type === 'ruangan') {
+      const isAlreadySelected = RuanganDipinjam.some(r => r.id_ruangan === item.id_ruangan);
       if (isAlreadySelected) {
-        setKelasDipinjam(prevClasses => prevClasses.filter(k => k.id_kelas !== item.id_kelas));
+        setRuanganDipinjam(prevClasses => prevClasses.filter(r => r.id_ruangan !== item.id_ruangan));
       } else {
-        if (kelasDipinjam.length < 2) {
-          setKelasDipinjam(prevClasses => [...prevClasses, item]);
+        if (RuanganDipinjam.length < 2) {
+          setRuanganDipinjam(prevClasses => [...prevClasses, item]);
         } else {
-          showSnackbar('Anda hanya dapat meminjam maksimal 2 kelas', 'warning');
+          showSnackbar('Anda hanya dapat meminjam maksimal 2 ruangan', 'warning');
         }
       }
     }
@@ -178,14 +186,8 @@ const Peminjaman = () => {
         }
         return prevItems.filter(item => item.id_barang !== itemId);
       });
-    } else if (type === 'kelas') {
-      setKelasDipinjam(prevClasses => {
-        const removedClass = prevClasses.find(kelas => kelas.id_kelas === itemId);
-        if (removedClass) {
-          setAvailableClasses(prevAvailable => [...prevAvailable, removedClass]);
-        }
-        return prevClasses.filter(kelas => kelas.id_kelas !== itemId);
-      });
+    } else if (type === 'ruangan') {
+      setRuanganDipinjam(prevClasses => prevClasses.filter(ruangan => ruangan.id_ruangan !== itemId));
     }
   };
 
@@ -214,7 +216,7 @@ const Peminjaman = () => {
   return (
     <div className="flex items-center justify-center py-10 min-h-screen flex-col bg-gray-900">
       <div className="bg-white shadow-lg rounded-3xl p-8 max-w-lg w-full text-center transition-transform duration-300 transform hover:scale-102 border border-gray-300 -mt-20">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Peminjaman Barang/Kelas</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Peminjaman Barang/Ruangan</h1>
 
         <form onSubmit={handleSubmit}>
           <input
@@ -234,7 +236,7 @@ const Peminjaman = () => {
           />
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-xl font-bold mb-5">Meminjam Barang atau Kelas?</label>
+            <label className="block text-gray-700 text-xl font-bold mb-5">Meminjam Barang atau Ruangan?</label>
             <div className="flex justify-center space-x-4">
               <button
                 type="button"
@@ -247,12 +249,12 @@ const Peminjaman = () => {
               </button>
               <button
                 type="button"
-                className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${itemType === 'kelas' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
+                className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${itemType === 'ruangan' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
                 onClick={() => {
-                  setItemType('kelas');
+                  setItemType('ruangan');
                 }}
               >
-                Kelas
+                Ruangan
               </button>
             </div>
           </div>
@@ -321,43 +323,44 @@ const Peminjaman = () => {
             </div>
           )}
 
-        {itemType === 'kelas' && (
+{itemType === 'ruangan' && (
           <div>
-            <h2 className="text-lg font-semibold mb-2 text-gray-700">Pilih Kelas (Maksimal 2):</h2>
+            <h2 className="text-lg font-semibold mb-2 text-gray-700">Pilih Ruangan (Maksimal 2):</h2>
             {isLoading ? (
               <p className="text-gray-600">Memuat data...</p>
             ) : error ? (
               <p className="text-red-500">Error: {error}</p>
             ) : availableClasses.length === 0 ? (
-              <p className="text-gray-600">Tidak ada kelas tersedia</p>
+              <p className="text-gray-600">Tidak ada Ruangan tersedia</p>
             ) : (
               <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
-                {availableClasses.map((kelas) => {
-                  const isSelected = kelasDipinjam.some(k => k.id_kelas === kelas.id_kelas);
-                  const isAvailable = kelas.status_kelas === 'Tersedia';
-                  const isDisabled = !isSelected && kelasDipinjam.length >= 2;
+                {availableClasses.map((ruangan) => {
+                  const isSelected = RuanganDipinjam.some(k => k.id_ruangan === ruangan.id_ruangan);
+                  const isDisabled = !isSelected && RuanganDipinjam.length >= 2;
 
                   return (
                     <li 
-                      key={kelas.id_kelas} 
+                      key={ruangan.id_ruangan} 
                       className={`flex justify-between items-center mb-2 p-2 rounded-xl ${
-                        isAvailable 
-                          ? `cursor-pointer transition duration-200 ${isSelected ? 'bg-blue-200' : isDisabled ? 'bg-gray-300' : 'hover:bg-blue-100'}` 
-                          : 'bg-gray-200'
+                        isSelected ? 'bg-blue-200' : isDisabled ? 'bg-gray-300' : 'hover:bg-blue-100 cursor-pointer'
                       }`}
-                      onClick={() => isAvailable && !isDisabled && handleSelectItem(kelas, 'kelas')}
+                      onClick={() => !isDisabled && handleSelectItem(ruangan, 'ruangan')}
                     >
-                      <span className={`font-semibold ${isAvailable ? 'text-gray-700' : 'text-gray-500'}`}>
-                        {kelas.kelas_jurusan}
+                      <span className="font-semibold text-gray-700">
+                        {ruangan.nama_ruangan}
                       </span>
                       <span className={`text-sm ${
-                        isAvailable 
-                          ? (isSelected ? 'text-green-600' : isDisabled ? 'text-gray-500' : 'text-blue-600') 
-                          : 'text-red-500'
+                        isSelected 
+                          ? 'text-green-600' 
+                          : isDisabled 
+                            ? 'text-gray-500' 
+                            : 'text-blue-600'
                       }`}>
-                        {isAvailable 
-                          ? (isSelected ? 'Dipilih' : isDisabled ? 'Batas Tercapai' : 'Pilih') 
-                          : 'Tidak Tersedia'
+                        {isSelected 
+                          ? 'Dipilih' 
+                          : isDisabled 
+                            ? 'Batas Tercapai' 
+                            : 'Pilih'
                         }
                       </span>
                     </li>
@@ -366,18 +369,19 @@ const Peminjaman = () => {
               </ul>
             )}
             
-            <h2 className="text-lg font-semibold mb-2 text-gray-700">Kelas Dipilih:</h2>
+            <h2 className="text-lg font-semibold mb-2 text-gray-700">Ruangan Dipilih:</h2>
             <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
-              {kelasDipinjam.map((kelas) => (
+              {RuanganDipinjam.map((ruangan) => (
                 <li 
-                  key={kelas.id_kelas} 
+                  key={ruangan.id_ruangan} 
                   className="flex justify-between items-center mb-2 p-2 rounded-xl"
                 >
                   <span className="font-semibold text-gray-700">
-                    {kelas.kelas_jurusan}
+                    {ruangan.nama_ruangan}
                   </span>
                   <button
-                    onClick={() => handleSelectItem(kelas, 'kelas')}
+                    type="button"
+                    onClick={() => handleRemoveItem(ruangan.id_ruangan, 'ruangan')}
                     className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200"
                   >
                     Hapus
@@ -398,11 +402,11 @@ const Peminjaman = () => {
 
       {submitted && (
         <div className="mt-4">
-          {isApproved ? (
-            <p className="text-green-600 font-semibold text-base">Peminjaman Disetujui! Barang/Kelas dipinjam.</p>
-          ) : (
+          {isApproved === true ? (
+            <p className="text-green-600 font-semibold text-base">Peminjaman Disetujui! Barang/Ruangan dipinjam.</p>
+          ) : isApproved === false ? (
             <p className="text-red-600 font-semibold text-base">Peminjaman Ditolak!</p>
-          )}
+          ) : null}
         </div>
       )}
     </div>

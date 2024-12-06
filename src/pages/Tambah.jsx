@@ -7,7 +7,8 @@ const AddForm = () => {
   const [type, setType] = useState('barang');
   const [nama_barang, setNama] = useState('');
   const [jumlah, setJumlah] = useState('');
-  const [kelas_jurusan, setKelasJurusan] = useState('');
+  const [tipe, setTipe] = useState('');
+  const [nama_ruangan, setNamaRuangan] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const showSnackbar = useSnackbar();
 
@@ -18,8 +19,8 @@ const AddForm = () => {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
       const payload = type === 'barang'
-        ? { nama_barang, jumlah_barang: parseInt(jumlah) }
-        : { kelas_jurusan: kelas_jurusan, status_kelas: 'Tersedia' };
+        ? { nama_barang, jumlah_barang: parseInt(jumlah), tipe }
+        : { nama_ruangan: nama_ruangan, status_ruangan: 'Tersedia' };
 
       const response = await api.post(`${API_URL}/peminjaman/${type}`, payload, { headers });
 
@@ -34,8 +35,8 @@ const AddForm = () => {
         const message = error.response.data.message;
         if (message.includes('Barang dengan nama tersebut sudah ada')) {
           showSnackbar('Barang dengan nama tersebut sudah ada.', 'error');
-        } else if (message.includes('Kelas jurusan sudah ada')) {
-          showSnackbar('Kelas jurusan sudah ada.', 'error');
+        } else if (message.includes('Ruangan sudah ada')) {
+          showSnackbar('Ruangan sudah ada.', 'error');
         } else {
           showSnackbar(error.message || 'Terjadi kesalahan', 'error');
         }
@@ -50,13 +51,14 @@ const AddForm = () => {
   const resetForm = () => {
     setNama('');
     setJumlah('');
-    setKelasJurusan('');
+    setTipe('');
+    setNamaRuangan('');
   };
 
   return (
     <div className="flex items-center justify-center py-10 min-h-screen flex-col bg-gray-900">
       <div className="bg-white shadow-lg rounded-3xl p-8 max-w-lg w-full text-center transition-transform duration-300 transform hover:scale-105 border border-gray-300 -mt-20">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Tambah {type === 'barang' ? 'Barang' : 'Kelas'}</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Tambah {type === 'barang' ? 'Barang' : 'Ruangan'}</h1>
 
         <div className="flex justify-center space-x-4 mb-6">
           <button
@@ -68,12 +70,12 @@ const AddForm = () => {
             Barang
           </button>
           <button
-            onClick={() => setType('kelas')}
+            onClick={() => setType('ruangan')}
             className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${
-              type === 'kelas' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'
+              type === 'ruangan' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'
             } transition duration-200`}
           >
-            Kelas
+            Ruangan
           </button>
         </div>
 
@@ -95,24 +97,32 @@ const AddForm = () => {
                 className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 min="1"
               />
+              <input
+                type="text"
+                value={tipe}
+                onChange={(e) => setTipe(e.target.value)}
+                placeholder="Tipe Barang"
+                className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                min="1"
+              />
             </>
           ) : (
             <>
               <input
                 type="text"
-                value={kelas_jurusan}
-                onChange={(e) => setKelasJurusan(e.target.value)}
-                placeholder="Kelas dan Jurusan"
+                value={nama_ruangan}
+                onChange={(e) => setNamaRuangan(e.target.value)}
+                placeholder="Ruangan"
                 className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              {/* Status Kelas */}
+              {/* Status Ruangan */}
               <div className="mb-4">
                 <select
                   value="Tersedia"
                   className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   disabled
                 >
-                  <option value="Tersedia">Status Kelas: Tersedia</option>
+                  <option value="Tersedia">Status Ruangan: Tersedia</option>
                 </select>
               </div>
             </>
@@ -124,7 +134,7 @@ const AddForm = () => {
             } transition duration-200`}
             disabled={isLoading}
           >
-            {isLoading ? 'Menambahkan...' : `Tambah ${type === 'barang' ? 'Barang' : 'Kelas'}`}
+            {isLoading ? 'Menambahkan...' : `Tambah ${type === 'barang' ? 'Barang' : 'Ruangan'}`}
           </button>
         </form>
       </div>

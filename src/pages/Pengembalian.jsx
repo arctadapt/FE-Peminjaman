@@ -17,7 +17,7 @@ const Pengembalian = () => {
     { id: 'nama_user', label: 'Nama Peminjam  ', align: 'left', width: '150px' },
     { id: 'kelas_user', label: 'Kelas Peminjam', align: 'left', width: '150px' },
     { id: 'nama_barang', label: 'Barang dipinjam', align: 'left', width: '150px' },
-    { id: 'kelas_jurusan', label: 'Kelas dipinjam', align: 'left', width: '200px' },
+    { id: 'nama_ruangan', label: 'Ruangan dipinjam', align: 'left', width: '200px' },
     { id: 'status_kembali', label: 'Status Kembali', align: 'left', width: '150px' },
     { id: 'action', label: 'Action', align: 'center', width: '200px' },
   ], []);
@@ -126,7 +126,7 @@ const Pengembalian = () => {
                           {returnItem.nama_barang || '-'}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">
-                          {returnItem.kelas_jurusan || '-'}
+                          {returnItem.nama_ruangan || '-'}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">
                           {returnItem.status_kembali}

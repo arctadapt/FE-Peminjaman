@@ -8,7 +8,7 @@ const Tersedia = () => {
   const [classes, setClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [kelasFilter, setKelasFilter] = useState('');
+  const [ruanganFilter, setRuanganFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('available');
   const [sortOrder, setSortOrder] = useState('asc');
 
@@ -58,13 +58,13 @@ const Tersedia = () => {
     setAvailableItems(prevItems => sortItems([...prevItems]));
   };
 
-  const filteredClasses = classes.filter(kelas => {
-    const matchesKelasFilter = kelasFilter === '' || kelas.kelas_jurusan.split(' ')[0] === kelasFilter;
+  const filteredClasses = classes.filter(ruangan => {
+    const matchesRuanganFilter = ruanganFilter === '' || ruangan.nama_ruangan.split(' ')[0] === ruanganFilter;
     const matchesStatusFilter = 
-      (statusFilter === 'available' && kelas.status_kelas === 'Tersedia') ||
-      (statusFilter === 'unavailable' && kelas.status_kelas !== 'Tersedia') ||
+      (statusFilter === 'available' && ruangan.status_ruangan === 'Tersedia') ||
+      (statusFilter === 'unavailable' && ruangan.status_ruangan !== 'Tersedia') ||
       statusFilter === 'all';
-    return matchesKelasFilter && matchesStatusFilter;
+    return matchesRuanganFilter && matchesStatusFilter;
   });
   
   if (isLoading) {
@@ -106,33 +106,33 @@ const Tersedia = () => {
           )}
         </div>
 
-        {/* Bagian Kelas */}
+        {/* Bagian Ruangan */}
         <div className="w-full lg:w-1/2 bg-white shadow-2xl rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:shadow-blue-500/20 hover:scale-[1.02] border-2">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Kelas</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Ruangan</h2>
 
-          {/* Filter Kelas */}
+          {/* Filter Ruangan */}
           <div className="flex flex-wrap gap-4 mb-6">
             <button
-              onClick={() => setKelasFilter('')}
-              className={`px-4 py-2 rounded-lg ${kelasFilter === '' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-800'} transition-all duration-300`}
+              onClick={() => setRuanganFilter('')}
+              className={`px-4 py-2 rounded-lg ${ruanganFilter === '' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-800'} transition-all duration-300`}
             >
-              Semua Kelas
+              Semua Ruangan
             </button>
             <button
-              onClick={() => setKelasFilter('X')}
-              className={`px-4 py-2 rounded-lg ${kelasFilter === 'X' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-800'} transition-all duration-300`}
+              onClick={() => setRuanganFilter('X')}
+              className={`px-4 py-2 rounded-lg ${ruanganFilter === 'X' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-800'} transition-all duration-300`}
             >
               Kelas X
             </button>
             <button
-              onClick={() => setKelasFilter('XI')}
-              className={`px-4 py-2 rounded-lg ${kelasFilter === 'XI' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-800'} transition-all duration-300`}
+              onClick={() => setRuanganFilter('XI')}
+              className={`px-4 py-2 rounded-lg ${ruanganFilter === 'XI' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-800'} transition-all duration-300`}
             >
               Kelas XI
             </button>
             <button
-              onClick={() => setKelasFilter('XII')}
-              className={`px-4 py-2 rounded-lg ${kelasFilter === 'XII' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-800'} transition-all duration-300`}
+              onClick={() => setRuanganFilter('XII')}
+              className={`px-4 py-2 rounded-lg ${ruanganFilter === 'XII' ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-800'} transition-all duration-300`}
             >
               Kelas XII
             </button>
@@ -162,17 +162,17 @@ const Tersedia = () => {
 
           {filteredClasses.length > 0 ? (
             <ul className="space-y-4 overflow-y-auto max-h-[60vh]">
-              {filteredClasses.map((kelas) => (
-                <li key={kelas.id_kelas} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-blue-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-blue-200 hover:shadow-blue-500/30 border border-blue-300">
-                  <span className="text-blue-800 font-semibold mb-2 sm:mb-0">{kelas.kelas_jurusan}</span>
-                  <span className={`font-semibold px-3 py-1 rounded-full ${kelas.status_kelas === 'Tersedia' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
-                    Status: {kelas.status_kelas}
+              {filteredClasses.map((ruangan) => (
+                <li key={ruangan.id_ruangan} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-blue-100 shadow-lg rounded-xl transition-all duration-300 hover:bg-blue-200 hover:shadow-blue-500/30 border border-blue-300">
+                  <span className="text-blue-800 font-semibold mb-2 sm:mb-0">{ruangan.nama_ruangan}</span>
+                  <span className={`font-semibold px-3 py-1 rounded-full ${ruangan.status_ruangan === 'Tersedia' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                    Status: {ruangan.status_ruangan}
                   </span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-gray-600 text-center italic border border-gray-300 rounded-lg p-4">Tidak ada kelas yang sesuai dengan filter saat ini.</p>
+            <p className="text-gray-600 text-center italic border border-gray-300 rounded-lg p-4">Tidak ada Ruangan yang sesuai dengan filter saat ini.</p>
           )}
         </div>
       </div>

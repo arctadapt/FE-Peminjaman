@@ -24,7 +24,7 @@ const Request = () => {
     { id: 'kelas_user', label: 'Kelas & Jurusan', align: 'left', width: '200px' },
     { id: 'barang', label: 'Barang dipinjam', align: 'left', width: '200px' },
     { id: 'jumlah', label: 'Jumlah Barang', align: 'left', width: '200px' },
-    { id: 'kelas', label: 'Kelas dipinjam', align: 'left', width: '200px' },
+    { id: 'ruangan', label: 'Ruangan dipinjam', align: 'left', width: '200px' },
     { id: 'date', label: 'Tanggal', align: 'left', width: '150px' },
     { id: 'status', label: 'Status', align: 'left', width: '150px' },
     { id: 'action', label: 'Action', align: 'center', width: '200px' },
@@ -125,7 +125,7 @@ const Request = () => {
         <div className="max-w-7xl mx-auto">
           <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">List Request</h1>
-            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat dan kelola permintaan barang dan kelas di sini.</p>
+            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat dan kelola permintaan barang dan ruangan di sini.</p>
           </section>
 
           <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-500">
@@ -169,7 +169,7 @@ const Request = () => {
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.kelas_user}</td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.nama_barang || '-'}</td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.jumlah_barang || '-'}</td>
-                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.kelas_jurusan || '-'}</td>
+                        <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.nama_ruangan || '-'}</td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">{new Date(request.tanggal_pinjam).toLocaleDateString()}</td>
                         <td className="px-6 py-4 text-sm text-gray-700 font-medium">{request.status}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">

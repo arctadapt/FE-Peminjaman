@@ -74,7 +74,7 @@ const Riwayat = ({ onReturn }) => {
         <div className="max-w-7xl mx-auto">
           <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">Riwayat Peminjaman</h1>
-            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat riwayat peminjaman barang dan kelas di sini.</p>
+            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat riwayat peminjaman barang dan ruangan di sini.</p>
           </section>
 
           <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-500">
@@ -115,7 +115,7 @@ const Riwayat = ({ onReturn }) => {
                         {entry.nama_barang || '-'}
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium">
-                        {entry.kelas_pinjaman ? entry.kelas_pinjaman : (entry.status_kelas = '-')}
+                        {entry.ruangan_pinjaman ? entry.ruangan_pinjaman : (entry.status_ruangan = '-')}
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium text-center">
                         {new Date(entry.tanggal_pinjam).toLocaleDateString()}
