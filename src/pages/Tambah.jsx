@@ -11,16 +11,23 @@ const AddForm = () => {
   const [nama_ruangan, setNamaRuangan] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const showSnackbar = useSnackbar();
+  const [tipe_ruangan, setTipeRuangan] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (type === 'ruangan' && !tipe_ruangan) {
+      showSnackbar('Silakan pilih Tipe Ruangan', 'error');
+      return;
+    }
+
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
       const payload = type === 'barang'
-        ? { nama_barang, jumlah_barang: parseInt(jumlah), tipe }
-        : { nama_ruangan: nama_ruangan, status_ruangan: 'Tersedia' };
+        ? { nama_barang, jumlah_barang: parseInt(jumlah), tipe:tipe }
+        : { nama_ruangan: nama_ruangan, status_ruangan: 'Tersedia', tipe_ruangan:tipe_ruangan };
 
       const response = await api.post(`${API_URL}/peminjaman/${type}`, payload, { headers });
 
@@ -53,6 +60,7 @@ const AddForm = () => {
     setJumlah('');
     setTipe('');
     setNamaRuangan('');
+    setTipeRuangan('');
   };
 
   return (
@@ -97,14 +105,17 @@ const AddForm = () => {
                 className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 min="1"
               />
-              <input
-                type="text"
+              <select
                 value={tipe}
                 onChange={(e) => setTipe(e.target.value)}
-                placeholder="Tipe Barang"
                 className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                min="1"
-              />
+              >
+                <option value="">Pilih Tipe Barang</option>
+                <option value="Alat">Alat</option>
+                <option value="Eskul">Eskul</option>
+                <option value="Kebersihan">Kebersihan</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
             </>
           ) : (
             <>
@@ -115,6 +126,17 @@ const AddForm = () => {
                 placeholder="Ruangan"
                 className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
+              <select
+                value={tipe_ruangan}
+                onChange={(e) => setTipeRuangan(e.target.value)}
+                className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <option value="">Pilih Tipe Ruangan</option>
+                <option value="umum">Umum</option>
+                <option value="kelas X">Kelas X</option>
+                <option value="kelas XI">Kelas XI</option>
+                <option value="kelas XII">Kelas XII</option>
+              </select>
               {/* Status Ruangan */}
               <div className="mb-4">
                 <select
