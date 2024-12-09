@@ -3,15 +3,15 @@ import api from '../features/axios';
 import API_URL from '../config/config';
 
 const Tersedia = () => {
-  const [availableItems, setAvailableItems] = useState([]);
-  const [unavailableItems, setUnavailableItems] = useState([]);
+  const [allItems, setAllItems] = useState([]);
   const [classes, setClasses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [ruanganFilter, setRuanganFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('available');
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [ruanganStatusFilter, setRuanganStatusFilter] = useState('available');
   const [barangFilter, setBarangFilter] = useState('');
+  const [barangStatusFilter, setBarangStatusFilter] = useState('all');
+  const [sortOrder, setSortOrder] = useState('asc');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,8 +26,7 @@ const Tersedia = () => {
 
         if (itemsResponse.data.status === 'success') {
           const items = itemsResponse.data.data_barang;
-          setAvailableItems(sortItems(items.filter(item => item.jumlah_barang > 0)));
-          setUnavailableItems(items.filter(item => item.jumlah_barang === 0));
+          setAllItems(sortItems(items));
         }
 
         if (classesResponse.data.status === 'success') {
@@ -46,6 +45,11 @@ const Tersedia = () => {
 
   const sortItems = (items) => {
     return items.sort((a, b) => {
+      // First, sort by availability (available items first)
+      if (a.jumlah_barang > 0 && b.jumlah_barang === 0) return -1;
+      if (a.jumlah_barang === 0 && b.jumlah_barang > 0) return 1;
+      
+      // Then sort alphabetically within availability groups
       if (sortOrder === 'asc') {
         return a.nama_barang.localeCompare(b.nama_barang);
       } else {
@@ -54,32 +58,31 @@ const Tersedia = () => {
     });
   };
 
-  const toggleSortOrder = () => {
-    setSortOrder(prevOrder => prevOrder === 'asc' ? 'desc' : 'asc');
-    setAvailableItems(prevItems => sortItems([...prevItems]));
-  };
-
   const filteredClasses = classes.filter(ruangan => {
     const matchesRuanganFilter = 
       ruanganFilter === '' || 
       ruangan.tipe_ruangan.toLowerCase().includes(ruanganFilter.toLowerCase());
     
     const matchesStatusFilter = 
-      (statusFilter === 'available' && ruangan.status_ruangan === 'Tersedia') ||
-      (statusFilter === 'unavailable' && ruangan.status_ruangan !== 'Tersedia') ||
-      statusFilter === 'all';
+      (ruanganStatusFilter === 'available' && ruangan.status_ruangan === 'Tersedia') ||
+      (ruanganStatusFilter === 'unavailable' && ruangan.status_ruangan !== 'Tersedia') ||
+      ruanganStatusFilter === 'all';
     
     return matchesRuanganFilter && matchesStatusFilter;
-});
+  });
 
-const filteredAvailableItems = availableItems.filter(barang => {
-  const matchesBarangFilter = 
-    barangFilter === '' || 
-    barang.nama_barang.toLowerCase().includes(barangFilter.toLowerCase()) ||
-    barang.tipe_barang.toLowerCase().includes(barangFilter.toLowerCase());
-  
-  return matchesBarangFilter;
-});
+  const filteredItems = allItems.filter(barang => {
+    const matchesBarangFilter = 
+      barangFilter === '' || 
+      barang.tipe_barang.toLowerCase().includes(barangFilter.toLowerCase());
+    
+    const matchesBarangStatusFilter = 
+      barangStatusFilter === 'all' ||
+      (barangStatusFilter === 'available' && barang.jumlah_barang > 0) ||
+      (barangStatusFilter === 'unavailable' && barang.jumlah_barang === 0);
+    
+    return matchesBarangFilter && matchesBarangStatusFilter;
+  });
 
   if (isLoading) {
     return <div className="text-white text-center">Memuat data...</div>;
@@ -98,7 +101,9 @@ const filteredAvailableItems = availableItems.filter(barang => {
           <div className="flex justify-between items-center mb-6 border-b-2 border-blue-500 pb-2">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Barang</h2>
           </div>
-          <div className="mb-6">
+          
+          {/* Filter Tipe Barang */}
+          <div className="mb-4">
             <select
               value={barangFilter}
               onChange={(e) => setBarangFilter(e.target.value)}
@@ -110,15 +115,34 @@ const filteredAvailableItems = availableItems.filter(barang => {
               {/* Tambahkan opsi filter tipe barang sesuai kebutuhan */}
             </select>
           </div>
-          {filteredAvailableItems.length > 0 ? (
-            <ul className="space-y-4 overflow-y-auto max-h-[60vh]">
-              {filteredAvailableItems.map((item) => (
+
+          {/* Filter Status Barang */}
+          <div className="mb-6">
+            <select
+              value={barangStatusFilter}
+              onChange={(e) => setBarangStatusFilter(e.target.value)}
+              className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="all">Semua Status</option>
+              <option value="available">Tersedia</option>
+              <option value="unavailable">Tidak Tersedia</option>
+            </select>
+          </div>
+
+          {filteredItems.length > 0 ? (
+            <ul className="space-y-4 overflow-y-auto max-h-[50vh]">
+              {filteredItems.map((item) => (
                 <li 
                   key={item.id_barang} 
-                  className="flex flex-col sm:flex-row justify-between items-start sm:items-center 
-                            p-4 bg-blue-50 border border-blue-200 rounded-xl 
-                            shadow-sm hover:shadow-md transition-all duration-300 
-                            hover:bg-blue-100 hover:border-blue-300"
+                  className={`
+                    flex flex-col sm:flex-row justify-between items-start sm:items-center 
+                    p-4 border border-blue-200 rounded-xl 
+                    shadow-sm hover:shadow-md transition-all duration-300 
+                    hover:border-blue-300
+                    ${item.jumlah_barang > 0 
+                      ? 'bg-green-50 hover:bg-green-100' 
+                      : 'bg-red-50 hover:bg-red-100'}
+                  `}
                 >
                   <div className="flex flex-col">
                     <span className="text-blue-900 font-bold text-base mb-1">
@@ -126,13 +150,20 @@ const filteredAvailableItems = availableItems.filter(barang => {
                     </span>
                     <div className="flex items-center space-x-2 text-blue-700">
                       <span className="text-sm">
-                        <strong>Stok:</strong> {item.jumlah_barang}
-                      </span>
-                      <span className="text-sm">
                         <strong>Tipe:</strong> {item.tipe_barang}
                       </span>
                     </div>
                   </div>
+                  <span 
+                    className={`
+                      font-semibold px-3 py-1 rounded-full mt-2 sm:mt-0
+                      ${item.jumlah_barang > 0 
+                        ? 'bg-green-100 text-green-700' 
+                        : 'bg-red-100 text-red-700'}
+                    `}
+                  >
+                    Stok: {item.jumlah_barang}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -146,7 +177,7 @@ const filteredAvailableItems = availableItems.filter(barang => {
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-500 pb-2">Ruangan</h2>
             
           {/* Filter Ruangan */}
-          <div className="mb-6">
+          <div className="mb-4">
             <select
               value={ruanganFilter}
               onChange={(e) => setRuanganFilter(e.target.value)}
@@ -160,11 +191,11 @@ const filteredAvailableItems = availableItems.filter(barang => {
             </select>
           </div>
 
-          {/* Filter Status */}
+          {/* Filter Status Ruangan */}
           <div className="mb-6">
             <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              value={ruanganStatusFilter}
+              onChange={(e) => setRuanganStatusFilter(e.target.value)}
               className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <option value="all">Semua Status</option>
@@ -174,14 +205,19 @@ const filteredAvailableItems = availableItems.filter(barang => {
           </div>
 
           {filteredClasses.length > 0 ? (
-            <ul className="space-y-4 overflow-y-auto max-h-[60vh]">
+            <ul className="space-y-4 overflow-y-auto max-h-[50vh]">
               {filteredClasses.map((ruangan) => (
                 <li 
                   key={ruangan.id_ruangan} 
-                  className="flex flex-col sm:flex-row justify-between items-start sm:items-center 
-                            p-4 bg-blue-50 border border-blue-200 rounded-xl 
-                            shadow-sm hover:shadow-md transition-all duration-300 
-                            hover:bg-blue-100 hover:border-blue-300"
+                  className={`
+                    flex flex-col sm:flex-row justify-between items-start sm:items-center 
+                    p-4 border border-blue-200 rounded-xl 
+                    shadow-sm hover:shadow-md transition-all duration-300 
+                    hover:border-blue-300
+                    ${ruangan.status_ruangan === 'Tersedia' 
+                      ? 'bg-green-50 hover:bg-green-100' 
+                      : 'bg-red-50 hover:bg-red-100'}
+                  `}
                 >
                   <div className="flex flex-col space-y-1 w-full sm:w-auto">
                     <span className="text-blue-900 font-bold text-base">
