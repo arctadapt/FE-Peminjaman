@@ -7,7 +7,7 @@ const AddForm = () => {
   const [type, setType] = useState('barang');
   const [nama_barang, setNama] = useState('');
   const [jumlah, setJumlah] = useState('');
-  const [tipe, setTipe] = useState('');
+  const [tipe_barang, setTipeBarang] = useState('');
   const [nama_ruangan, setNamaRuangan] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const showSnackbar = useSnackbar();
@@ -26,7 +26,7 @@ const AddForm = () => {
       const token = localStorage.getItem('token');
       const headers = { Authorization: `Bearer ${token}` };
       const payload = type === 'barang'
-        ? { nama_barang, jumlah_barang: parseInt(jumlah), tipe:tipe }
+        ? { nama_barang, jumlah_barang: parseInt(jumlah), tipe_barang:tipe_barang }
         : { nama_ruangan: nama_ruangan, status_ruangan: 'Tersedia', tipe_ruangan:tipe_ruangan };
 
       const response = await api.post(`${API_URL}/peminjaman/${type}`, payload, { headers });
@@ -58,7 +58,7 @@ const AddForm = () => {
   const resetForm = () => {
     setNama('');
     setJumlah('');
-    setTipe('');
+    setTipeBarang('');
     setNamaRuangan('');
     setTipeRuangan('');
   };
@@ -106,8 +106,8 @@ const AddForm = () => {
                 min="1"
               />
               <select
-                value={tipe}
-                onChange={(e) => setTipe(e.target.value)}
+                value={tipe_barang}
+                onChange={(e) => setTipeBarang(e.target.value)}
                 className="w-full px-4 py-2 border rounded-xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="">Pilih Tipe Barang</option>
