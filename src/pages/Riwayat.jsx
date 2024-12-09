@@ -18,6 +18,7 @@ const Riwayat = ({ onReturn }) => {
     { id: 'kelasDipinjam', label: 'Kelas Dipinjam', align: 'left', width: '200px' },
     { id: 'tanggal_pinjam', label: 'Tanggal Pinjam', align: 'center', width: '150px' },
     { id: 'tanggal_kembali', label: 'Tanggal Kembali', align: 'center', width: '150px' },
+    { id: 'message', label: 'Alasan', align: 'center', width: '300px' },
   ], []);
 
   useEffect(() => {
@@ -122,6 +123,9 @@ const Riwayat = ({ onReturn }) => {
                       </td>
                       <td className="px-6 py-4 text-sm text-black font-medium text-center">
                         {entry.tanggal_kembali ? new Date(entry.tanggal_kembali).toLocaleDateString() : '-'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black font-medium">
+                        {entry.message || '-'}
                       </td>
                     </tr>
                   ))}

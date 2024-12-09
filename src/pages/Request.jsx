@@ -88,7 +88,7 @@ const Request = () => {
 
   const handleRejectConfirm = async () => {
     if (!rejectReason.trim()) {
-      alert('Please provide a reason for rejection.');
+      showSnackbar('Tolong masukan alasan untuk menolak permintaan', 'error');
       return;
     }
 
