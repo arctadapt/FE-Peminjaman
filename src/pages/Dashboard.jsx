@@ -11,111 +11,97 @@ const Dashboard = () => {
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/');
-    } else {
     }
   }, [navigate]);
 
-  const handleStartBorrowing = () => {
-    navigate('/peminjaman');
-  };
-
   const dashboardCards = [
     {
-      title: 'Barang yang Tersedia',
-      description: 'Lihat ada barang dan kelas apa saja yang tersedia.',
-      bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
-      icon: <FaClipboardList />,
+      title: 'Barang yang tersedia',
+      description: 'Lihat barang dan ruangan yang tersedia.',
+      icon: <FaClipboardList className="text-red-600 text-3xl" />,
       path: '/tersedia',
-      roles: ['USER', 'ADMIN', 'SUPER ADMIN'], 
+      roles: ['USER', 'ADMIN', 'SUPER ADMIN'],
     },
     {
       title: 'Notifikasi',
-      description: 'Lihat notifikasi penerimaan barang dari Admin disini.',
-      bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
-      icon: <FaBell />,
+      description: 'Lihat notifikasi penerimaan barang dari Admin.',
+      icon: <FaBell className="text-red-600 text-3xl" />,
       path: '/listnotifikasi',
-      roles: ['USER'], 
+      roles: ['USER'],
     },
     {
-      title: 'Riwayat Peminjaman',
-      description: 'Lihat riwayat peminjaman barang dan kelas sekolah.',
-      bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
-      icon: <FaHistory />,
+      title: 'Riwayat peminjaman',
+      description: 'Lihat riwayat peminjaman barang dan ruangan sekolah.',
+      icon: <FaHistory className="text-red-600 text-3xl" />,
       path: '/riwayat',
-      roles: ['ADMIN', 'SUPER ADMIN'], 
+      roles: ['ADMIN', 'SUPER ADMIN'],
     },
     {
-      title: 'Permintaan Barang dan Kelas',
-      description: 'Lihat permintaan barang dan kelas',
-      bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
-      icon: <FaFileAlt />,
+      title: 'Permintaan barang dan ruangan',
+      description: 'Lihat permintaan barang dan ruangan.',
+      icon: <FaFileAlt className="text-red-600 text-3xl" />,
       path: '/request',
-      roles: ['ADMIN', 'SUPER ADMIN'], 
+      roles: ['ADMIN', 'SUPER ADMIN'],
     },
     {
       title: 'Pengembalian',
-      description: 'Kembalikan barang dan kelas disini',
-      bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
-      icon: <FaUndo />,
+      description: 'Kembalikan barang dan ruangan di sini.',
+      icon: <FaUndo className="text-red-600 text-3xl" />,
       path: '/kembali',
-      roles: ['USER'], 
+      roles: ['USER'],
     },
     {
-      title: 'Tambah Barang/Kelas',
-      description: 'Tambahkan barang dan kelas disini',
-      bgClass: 'bg-gradient-to-r from-blue-800 to-blue-600',
-      icon: <FaPlus />,
-      path: '/kembali',
-      roles: ['ADMIN', 'SUPER ADMIN'], 
-    }
+      title: 'Tambah barang atau ruangan',
+      description: 'Tambahkan barang dan ruangan di sini.',
+      icon: <FaPlus className="text-red-600 text-3xl" />,
+      path: '/tambah',
+      roles: ['ADMIN', 'SUPER ADMIN'],
+    },
+    {
+      title: 'Peminjaman Sekolah',
+      description: 'Kelola peminjaman barang dan ruangan sekolah dengan mudah dan cepat.',
+      icon: <FaClipboardList className="text-red-600 text-3xl" />,
+      path: '/peminjaman',
+      roles: ['USER'],
+    },
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900">
-      <main className="flex-1 p-6 sm:p-12 bg-opacity-80 rounded-lg shadow-lg">
-        <div className="max-w-7xl mx-auto">
-          {user ? (
-            <>
-              <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
-                <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">Peminjaman Sekolah</h1>
-                <p className="text-base font-medium sm:text-lg text-gray-300 mb-6 sm:mb-8">Kelola peminjaman barang dan kelas sekolah dengan mudah dan cepat.</p>
-                
-                {user.role === 'USER' && (
-                  <button
-                    onClick={handleStartBorrowing}
-                    className="px-6 py-3 sm:px-10 sm:py-4 bg-white text-blue-800 font-bold rounded-2xl shadow-lg hover:bg-gray-300 transition-transform duration-300 transform"
+    <div className="min-h-screen bg-[#d9d9d9] flex flex-col">
+      <main className="flex-1 py-4 sm:py-8 relative">
+        <section className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 mb-6 w-[90%] sm:w-[76rem] mx-auto">
+          <div className="flex items-center space-x-4">
+            <FaClipboardList className="text-red-600 text-3xl" />
+            <div>
+              <h3 className="text-base sm:text-lg font-semibold text-black">List request</h3>
+              <p className="text-sm text-gray-600 mt-1">Lihat dan kelola permintaan barang dan ruangan di sini.</p>
+            </div>
+          </div>
+        </section>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          {user && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {dashboardCards.map((card, index) => (
+                (!card.roles || card.roles.includes(user.role)) && (
+                  <div
+                    key={index}
+                    className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200"
+                    onClick={() => navigate(card.path)}
                   >
-                    Mulai Meminjam
-                  </button>
-                )}
-              </section>
-
-              <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-12">
-                {dashboardCards.map((card, index) => (
-                  (!card.roles || (user && card.roles.some(role => role === user.role))) && (
-                    <div
-                      key={index}
-                      className={`p-6 sm:p-8 ${card.bgClass} rounded-3xl shadow-xl transition-transform transform hover:scale-105 hover:shadow-2xl hover:-translate-y-2 border-4 border-white border-opacity-30 cursor-pointer`}
-                      onClick={() => navigate(card.path)}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className="text-3xl sm:text-4xl text-white">{card.icon}</div>
-                        <div>
-                          <h3 className="text-xl sm:text-2xl font-extrabold text-white">{card.title}</h3>
-                          <p className="text-sm sm:text-base text-gray-300 mt-2">{card.description}</p>
-                        </div>
-                      </div>
-                      <div className="mt-4">
-                        <div className="h-1 w-full bg-white rounded-full opacity-75"></div>
+                    <div className="flex items-center space-x-4">
+                      {card.icon}
+                      <div>
+                        <h3 className="text-base sm:text-lg font-semibold text-black">{card.title}</h3>
+                        <p className="text-sm text-gray-600 mt-1">{card.description}</p>
                       </div>
                     </div>
-                  )
-                ))} 
-              </section>
-            </>
-          ) : (
-            <p className="text-white">Loading...</p>
+                  </div>
+                )
+              ))}
+            </div>
           )}
+
+          {!user && <p className="text-black text-center">Loading...</p>}
         </div>
       </main>
     </div>

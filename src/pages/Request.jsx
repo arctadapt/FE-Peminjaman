@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Pagination from '../components/Pagination';
 import api from '../features/axios';
 import API_URL from '../config/config';
-import { FaCheck, FaTimes } from 'react-icons/fa';
+import { FaCheck, FaTimes, FaClipboardList } from 'react-icons/fa';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import { useSnackbar } from "../components/SnackbarProvider";
 
@@ -51,7 +51,6 @@ const Request = () => {
       }
     } catch (err) {
       console.error('Error fetching requests:', err);
-      setError('Gagal mendapatkan permintaan. Silakan coba lagi.');
     } finally {
       setLoading(false);
     }
@@ -120,13 +119,18 @@ const Request = () => {
   const paginatedRequests = requests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-[#d9d9d9]">
       <main className="flex-1 p-6 sm:p-12 bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
-          <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">List Request</h1>
-            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat dan kelola permintaan barang dan ruangan di sini.</p>
-          </section>
+        <section className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 mb-6 w-[90%] sm:w-[76rem] mx-auto">
+  <div className="flex items-center space-x-4">
+    <FaClipboardList className="text-red-600 text-3xl" />
+    <div>
+      <h3 className="text-base sm:text-lg font-semibold text-black">List Request</h3>
+      <p className="text-sm text-gray-600 mt-1">Lihat dan kelola permintaan barang dan ruangan di sini.</p>
+    </div>
+  </div>
+</section>
 
           <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-500">
             <div className="w-full overflow-x-auto">
@@ -146,17 +150,16 @@ const Request = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {/* Display error if any */}
                   {error ? (
                     <tr>
                       <td colSpan={headLabel.length} className="px-6 py-4 text-center text-red-600">
-                        Gagal mendapatkan permintaan. Silakan coba lagi.
+                        {error}
                       </td>
                     </tr>
                   ) : requests.length === 0 ? (
                     <tr>
                       <td colSpan={headLabel.length} className="px-6 py-4 text-center text-gray-500">
-                        Tidak ada data.
+                        Tidak ada permintaan.
                       </td>
                     </tr>
                   ) : (

@@ -3,6 +3,7 @@ import Pagination from '../components/Pagination';
 import api from '../features/axios';
 import API_URL from '../config/config';
 import { useSnackbar } from "../components/SnackbarProvider";
+import { FaBell } from 'react-icons/fa';
 
 const ListNotifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -29,7 +30,7 @@ const ListNotifications = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await api.get(`${API_URL}/notifications`, {
+      const response = await api.get(`${API_URL}/notifications/:id`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -82,14 +83,18 @@ const ListNotifications = () => {
   const paginatedNotifications = notifications.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900">
+    <div className="min-h-screen flex flex-col bg-[#d9d9d9]">
       <main className="flex-1 p-6 sm:p-12 bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
-          <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12 duration-500 hover:bg-blue-700 transform hover:-translate-y-2 border-4 border-blue-500">
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">List Notifikasi</h1>
-            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat dan kelola notifikasi yang ada di sini.</p>
-          </section>
-
+        <section className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 mb-6 w-[90%] sm:w-[76rem] mx-auto">
+          <div className="flex items-center space-x-4">
+            <FaBell className="text-red-600 text-3xl" />
+            <div>
+              <h3 className="text-base sm:text-lg font-semibold text-black">List Notifikasi</h3>
+              <p className="text-sm text-gray-600 mt-1">Lihat dan kelola notifikasi yang ada di sini.</p>
+            </div>
+          </div>
+        </section>
           <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-500">
             <div className="w-full overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-500">
@@ -144,7 +149,7 @@ const ListNotifications = () => {
                           <button
                             onClick={() => !notification.is_read && handleMarkAsRead(notification.id_notif)}
                             className={`${
-                              notification.is_read ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:text-blue-700'
+                              notification.is_read ? 'text-gray-400 cursor-not-allowed' : 'text-red-500 hover:text-red-700'
                             }`}
                             disabled={notification.is_read}
                           >

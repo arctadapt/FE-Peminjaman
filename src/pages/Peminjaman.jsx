@@ -214,33 +214,17 @@ const Peminjaman = () => {
   };
   
   return (
-    <div className="flex items-center justify-center py-10 min-h-screen flex-col bg-gray-900">
+    <div className="flex items-center justify-center py-10 min-h-screen flex-col bg-[#d9d9d9]">
       <div className="bg-white shadow-lg rounded-3xl p-8 max-w-lg w-full text-center transition-transform duration-300 transform hover:scale-102 border border-gray-300 -mt-20">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Peminjaman Barang/Ruangan</h1>
 
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={namaLengkap}
-            onChange={(e) => setNamaLengkap(e.target.value)}
-            placeholder="Nama Lengkap"
-            className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
-          />
-
-          <input
-            type="text"
-            value={kelasPeminjam}
-            onChange={(e) => setKelasPeminjam(e.target.value)}
-            placeholder="Kelas dan Jurusan Peminjam"
-            className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
-          />
-
           <div className="mb-4">
             <label className="block text-gray-700 text-xl font-bold mb-5">Meminjam Barang atau Ruangan?</label>
             <div className="flex justify-center space-x-4">
               <button
                 type="button"
-                className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${itemType === 'barang' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
+                className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${itemType === 'barang' ? 'bg-red-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
                 onClick={() => {
                   setItemType('barang');
                 }}
@@ -249,7 +233,7 @@ const Peminjaman = () => {
               </button>
               <button
                 type="button"
-                className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${itemType === 'ruangan' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
+                className={`px-6 py-2 rounded-xl text-gray-700 font-semibold ${itemType === 'ruangan' ? 'bg-red-600 text-white shadow-md' : 'bg-gray-200 hover:bg-gray-300'} transition duration-200`}
                 onClick={() => {
                   setItemType('ruangan');
                 }}
@@ -269,12 +253,12 @@ const Peminjaman = () => {
               ) : (
                 <ul className="bg-gray-100 rounded-2xl shadow-md p-4 mb-4 max-h-60 overflow-y-auto">
                   {availableItems.map((item) => (
-                    <li key={item.id_barang} className="flex justify-between items-center mb-2 p-2 hover:bg-blue-200 transition duration-200 rounded-xl">
+                    <li key={item.id_barang} className="flex justify-between items-center mb-2 p-2 hover:bg-red-200 transition duration-200 rounded-xl">
                       <span className="text-gray-700 font-semibold">{item.nama_barang} (Stok: {item.jumlah_barang})</span>
                       {item.jumlah_barang > 0 ? (
                         <button
                           type="button"
-                          className="text-blue-600 hover:underline text-base font-semibold"
+                          className="text-red-600 hover:underline text-base font-semibold"
                           onClick={() => handleSelectItem(item, 'barang')}
                         >
                           Pilih
@@ -342,7 +326,7 @@ const Peminjaman = () => {
                     <li 
                       key={ruangan.id_ruangan} 
                       className={`flex justify-between items-center mb-2 p-2 rounded-xl ${
-                        isSelected ? 'bg-blue-200' : isDisabled ? 'bg-gray-300' : 'hover:bg-blue-100 cursor-pointer'
+                        isSelected ? 'bg-red-200' : isDisabled ? 'bg-gray-300' : 'hover:bg-red-100 cursor-pointer'
                       }`}
                       onClick={() => !isDisabled && handleSelectItem(ruangan, 'ruangan')}
                     >
@@ -354,7 +338,7 @@ const Peminjaman = () => {
                           ? 'text-green-600' 
                           : isDisabled 
                             ? 'text-gray-500' 
-                            : 'text-blue-600'
+                            : 'text-red-600'
                       }`}>
                         {isSelected 
                           ? 'Dipilih' 
@@ -394,7 +378,7 @@ const Peminjaman = () => {
 
         <button
           type="submit"
-          className="mt-2 w-full h-11 px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition duration-200"
+          className="mt-2 w-full h-11 px-6 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition duration-200"
         >
           Submit
         </button>

@@ -69,13 +69,13 @@ const Layout = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-200">
-      <aside className="w-64 bg-blue-800 text-white p-6 flex flex-col shadow-lg border-r-4 border-blue-500 rounded-r-lg">
+    <div className="flex h-screen bg-white-900 text-white-200">
+      <aside className="w-64 bg-white-800 text-white p-6 flex flex-col shadow-lg border-r-4 border-red-700">
         <div className="mb-10 text-center">
-          <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-blue-300">
+          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gray-800">
             Dashboard
           </h2>
-          <div className="h-1 bg-blue-500 rounded-full opacity-75 mt-6 mx-auto"></div>
+          <div className="h-1 bg-red-700 rounded-full mt-6 mx-auto"></div>
         </div>
 
         <nav className="flex-grow">
@@ -85,7 +85,7 @@ const Layout = () => {
               .map((item, index) => (
                 <li key={index}>
                   <button
-                    className="w-full py-4 flex items-center gap-4 text-lg font-medium bg-transparent hover:bg-blue-600 rounded-lg transition-all duration-300 transform hover:scale-105"
+                    className="w-full py-4 flex items-center gap-4 text-lg font-medium bg-transparent hover:bg-red-800 rounded-lg text-black hover:text-white transition-all duration-300 transform hover:scale-105"
                     onClick={() => navigate(item.path)}
                   >
                     <div className="text-2xl ml-4">{item.icon}</div>
@@ -98,7 +98,7 @@ const Layout = () => {
 
         <div className="mt-8">
           <div
-            className="flex items-center gap-4 p-4 bg-blue-900 rounded-lg cursor-pointer transition-all duration-300 hover:bg-blue-600"
+            className="flex items-center gap-4 p-4 bg-red-700 rounded-lg cursor-pointer transition-all duration-300 hover:bg-red-800"
             onClick={() => setShowProfileMenu(!showProfileMenu)}
           >
             <FaUser className="text-2xl" />
@@ -107,16 +107,16 @@ const Layout = () => {
             </div>
           </div>
           {showProfileMenu && (
-            <div className="bg-blue-900 mt-2 rounded-lg p-2 space-y-2">
+            <div className="bg-red-700 mt-2 rounded-lg p-2 space-y-2">
               <button
-                className="flex items-center gap-3 p-2 w-full hover:bg-blue-600 rounded-md transition"
+                className="flex items-center gap-3 p-2 w-full hover:bg-red-800 rounded-md transition"
                 onClick={handleViewProfile}
               >
                 <FaUser className="text-xl" />
                 <span>View Profile</span>
               </button>
               <button
-                className="flex items-center gap-3 p-2 w-full hover:bg-red-600 rounded-md transition"
+                className="flex items-center gap-3 p-2 w-full hover:bg-red-800 rounded-md transition"
                 onClick={handleLogout}
               >
                 <FaSignOutAlt className="text-xl" />
@@ -126,7 +126,7 @@ const Layout = () => {
           )}
         </div>
       </aside>
-      <div className="flex-1 bg-gray-900">
+      <div className="flex-1 bg-white-900">
         <Outlet />
       </div>
     </div>

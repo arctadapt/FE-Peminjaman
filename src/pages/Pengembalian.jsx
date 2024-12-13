@@ -3,6 +3,7 @@ import Pagination from '../components/Pagination';
 import api from '../features/axios';
 import API_URL from '../config/config';
 import { useSnackbar } from "../components/SnackbarProvider";
+import { FaClipboardList } from 'react-icons/fa';
 
 const Pengembalian = () => {
   const [returns, setReturns] = useState([]);
@@ -75,11 +76,15 @@ const Pengembalian = () => {
     <div className="min-h-screen flex flex-col bg-gray-900">
       <main className="flex-1 p-6 sm:p-12 bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
-          <section className="bg-gradient-to-r from-blue-800 to-blue-600 p-6 sm:p-14 rounded-3xl shadow-xl mb-6 sm:mb-12">
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white mb-4 sm:mb-6">List Pengembalian</h1>
-            <p className="text-base font-medium sm:text-lg text-gray-300">Lihat dan kelola pengembalian barang di sini.</p>
-          </section>
-
+        <section className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 mb-6 w-[90%] sm:w-[76rem] mx-auto">
+        <div className="flex items-center space-x-4">
+          <FaClipboardList className="text-red-600 text-3xl" />
+          <div>
+            <h3 className="text-base sm:text-lg font-semibold text-black">List Pengembalian</h3>
+            <p className="text-sm text-gray-600 mt-1">Lihat dan kelola pengembalian barang di sini.</p>
+          </div>
+        </div>
+      </section>
           <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-500">
             <div className="w-full overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-500">
@@ -134,7 +139,7 @@ const Pengembalian = () => {
                         <td className="px-6 py-4 text-sm text-center">
                           <button
                             onClick={() => handleReturn(returnItem.id_kembali)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
                             disabled={returnItem.status_kembali === 'Sudah Dikembalikan'}
                           >
                             Kembalikan

@@ -40,8 +40,8 @@ const Admin = () => {
   };
 
   return (
-    <div className="flex items-center justify-center py-10 min-h-screen flex-col bg-gray-900">
-      <div className="bg-white shadow-lg rounded-3xl p-8 max-w-lg w-full text-center transition-transform duration-300 transform hover:scale-102 border border-gray-300">
+    <div className="flex items-center justify-center py-10 min-h-screen flex-col bg-[#d9d9d9]">
+      <div className="bg-white shadow-lg rounded-[0.5rem] p-8 max-w-lg w-full text-center transition-transform duration-300 transform hover:scale-102 border border-gray-300">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Tambah Admin</h1>
 
         <form onSubmit={handleAdmin}>
@@ -50,15 +50,15 @@ const Admin = () => {
             value={namaLengkap}
             onChange={(e) => setNamaLengkap(e.target.value)}
             placeholder="Nama Lengkap"
-            className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
+            className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-[0.5rem] shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition duration-200 text-gray-700"
           />
 
           <input
             type="text"
             value={kelas}
             onChange={(e) => setKelas(e.target.value)}
-            placeholder="Kelas atau Jabatan"
-            className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
+            placeholder="Jabatan"
+            className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-[0.5rem] shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition duration-200 text-gray-700"
           />
 
           <input
@@ -66,12 +66,12 @@ const Admin = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 text-gray-700"
+            className="w-full h-12 mb-4 px-4 py-2 border border-gray-300 rounded-[0.5rem] shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition duration-200 text-gray-700"
           />
 
           <button
             type="submit"
-            className={`w-full py-2 rounded-xl text-white font-semibold ${isLoading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} transition duration-200`}
+            className={`w-full py-2 rounded-[0.5rem] text-white font-semibold ${isLoading ? 'bg-gray-400' : 'bg-red-700 hover:bg-red-800'} transition duration-200`}
             disabled={isLoading}
           >
             {isLoading ? 'Sedang Menambah...' : 'Tambah Admin'}
