@@ -96,35 +96,42 @@ const Layout = () => {
           </ul>
         </nav>
 
-        <div className="mt-8">
-          <div
-            className="flex items-center gap-4 p-4 bg-red-700 rounded-lg cursor-pointer transition-all duration-300 hover:bg-red-800"
-            onClick={() => setShowProfileMenu(!showProfileMenu)}
-          >
-            <FaUser className="text-2xl" />
-            <div>
-              <h3 className="text-lg font-semibold">{"Profile"}</h3>
-            </div>
-          </div>
-          {showProfileMenu && (
-            <div className="bg-red-700 mt-2 rounded-lg p-2 space-y-2">
-              <button
-                className="flex items-center gap-3 p-2 w-full hover:bg-red-800 rounded-md transition"
-                onClick={handleViewProfile}
-              >
-                <FaUser className="text-xl" />
-                <span>View Profile</span>
-              </button>
-              <button
-                className="flex items-center gap-3 p-2 w-full hover:bg-red-800 rounded-md transition"
-                onClick={handleLogout}
-              >
-                <FaSignOutAlt className="text-xl" />
-                <span>Logout</span>
-              </button>
-            </div>
-          )}
-        </div>
+        <div className="mt-8 relative">
+  <div
+    className="flex items-center gap-4 p-4 bg-red-700 rounded-lg cursor-pointer transition-all duration-300 hover:bg-red-800"
+    onClick={() => setShowProfileMenu(!showProfileMenu)}
+  >
+    <FaUser className="text-2xl" />
+    <div>
+      <h3 className="text-lg font-semibold">{"Profile"}</h3>
+    </div>
+  </div>
+  {showProfileMenu && (
+    <div
+      className="absolute bg-red-700 rounded-lg p-2 space-y-2 shadow-lg"
+      style={{
+        top: '-170%', // Menu muncul ke atas
+        width: '100%', // Ukuran menu sama dengan tombol profile
+      }}
+    >
+      <button
+        className="flex items-center gap-3 p-2 w-full hover:bg-red-800 rounded-md transition"
+        onClick={handleViewProfile}
+      >
+        <FaUser className="text-xl" />
+        <span>View Profile</span>
+      </button>
+      <button
+        className="flex items-center gap-3 p-2 w-full hover:bg-red-800 rounded-md transition"
+        onClick={handleLogout}
+      >
+        <FaSignOutAlt className="text-xl" />
+        <span>Logout</span>
+      </button>
+    </div>
+  )}
+</div>
+
       </aside>
       <div className="flex-1 bg-white-900">
         <Outlet />
