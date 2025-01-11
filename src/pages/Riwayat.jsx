@@ -3,6 +3,7 @@ import Pagination from '../components/Pagination';
 import api from '../features/axios';
 import API_URL from '../config/config';
 import { FaHistory } from 'react-icons/fa';
+import * as XLSX from 'xlsx';
 
 const Riwayat = ({ onReturn }) => {
   const [history, setHistory] = useState([]);
@@ -31,7 +32,7 @@ const Riwayat = ({ onReturn }) => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-        
+
         if (response.data.status === 'success') {
           setHistory(response.data.data);
         } else {
@@ -58,6 +59,13 @@ const Riwayat = ({ onReturn }) => {
 
   const paginatedHistory = history.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(history);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Riwayat Peminjaman');
+    XLSX.writeFile(workbook, 'riwayat_peminjaman.xlsx');
+  };
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center bg-gray-900">
       <p className="text-white text-xl">Loading...</p>
@@ -75,13 +83,21 @@ const Riwayat = ({ onReturn }) => {
       <main className="flex-1 p-6 sm:p-12 bg-opacity-80 rounded-lg shadow-lg">
         <div className="max-w-7xl mx-auto">
         <section className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 mb-6 w-[90%] sm:w-[76rem] mx-auto">
-        <div className="flex items-center space-x-4">
-          <FaHistory className="text-red-600 text-3xl" />
-          <div>
-            <h3 className="text-base sm:text-lg font-semibold text-black">Riwayat Peminjaman</h3>
-            <p className="text-sm text-gray-600 mt-1">Lihat riwayat peminjaman barang dan ruangan di sini.</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <FaHistory className="text-red-600 text-3xl" />
+              <div>
+                <h3 className="text-base sm:text-lg font-semibold text-black">Riwayat Peminjaman</h3>
+                <p className="text-sm text-gray-600 mt-1">Lihat riwayat peminjaman barang dan ruangan di sini.</p>
+              </div>
+            </div>
+            <button
+              onClick={exportToExcel}
+              className="bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Export Data
+            </button>
           </div>
-        </div>
         </section>
           <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-500">
             <div className="w-full overflow-x-auto">
