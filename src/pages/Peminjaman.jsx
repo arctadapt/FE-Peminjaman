@@ -57,16 +57,6 @@ const Peminjaman = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!namaLengkap.trim()) {
-      showSnackbar('Mohon masukkan nama lengkap Anda', 'error');
-      return;
-    }
-
-    if (!kelasPeminjam.trim()) {
-      showSnackbar('Mohon masukkan kelas dan jurusan Anda', 'error');
-      return;
-    }
-
     // Validasi untuk peminjaman barang
     if (itemType === 'barang' && barangDipinjam.length === 0) {
       showSnackbar('Mohon pilih setidaknya satu barang untuk dipinjam', 'error');
