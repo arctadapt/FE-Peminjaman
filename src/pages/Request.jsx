@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Pagination from '../components/Pagination';
 import api from '../features/axios';
 import API_URL from '../config/config';
-import { FaCheck, FaTimes, FaClipboardList } from 'react-icons/fa';
+import { FaCheck, FaTimes } from 'react-icons/fa';
+import { HiClipboardDocument } from "react-icons/hi2";
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import { useSnackbar } from "../components/SnackbarProvider";
 
@@ -124,7 +125,7 @@ const Request = () => {
         <div className="max-w-7xl mx-auto">
         <section className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 mb-6 w-[90%] sm:w-[76rem] mx-auto">
   <div className="flex items-center space-x-4">
-    <FaClipboardList className="text-red-600 text-3xl" />
+    <HiClipboardDocument className="text-red-600 text-3xl" />
     <div>
       <h3 className="text-base sm:text-lg font-semibold text-black">List Request</h3>
       <p className="text-sm text-gray-600 mt-1">Lihat dan kelola permintaan barang dan ruangan di sini.</p>

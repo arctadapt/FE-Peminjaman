@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaBell, FaClipboardList, FaFileAlt, FaHistory, FaPlus, FaUndo } from 'react-icons/fa';
+import { FaBell, FaClipboardList, FaFileAlt, FaHistory, FaPlus, FaUndo, FaBoxOpen } from 'react-icons/fa';
+import { RiAlignItemBottomLine } from "react-icons/ri";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Dashboard = () => {
     {
       title: 'Barang yang tersedia',
       description: 'Lihat barang dan ruangan yang tersedia.',
-      icon: <FaClipboardList className="text-red-600 text-3xl" />,
+      icon: <RiAlignItemBottomLine className="text-red-600 text-3xl" />,
       path: '/tersedia',
       roles: ['USER', 'ADMIN', 'SUPER ADMIN'],
     },
@@ -58,8 +59,8 @@ const Dashboard = () => {
       roles: ['ADMIN', 'SUPER ADMIN'],
     },
     {
-      title: 'Peminjaman Sekolah',
-      description: 'Kelola peminjaman barang dan ruangan sekolah dengan mudah dan cepat.',
+      title: 'Mulai pinjam barang atau ruangan',
+      description: 'Pinjam barang dan ruangan menjadi lebih praktis',
       icon: <FaClipboardList className="text-red-600 text-3xl" />,
       path: '/peminjaman',
       roles: ['USER'],
@@ -71,9 +72,9 @@ const Dashboard = () => {
       <main className="flex-1 py-4 sm:py-8 relative">
         <section className="bg-white p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer border border-gray-200 mb-6 w-[90%] sm:w-[76rem] mx-auto">
           <div className="flex items-center space-x-4">
-            <FaClipboardList className="text-red-600 text-3xl" />
+            <FaBoxOpen className="text-red-600 text-3xl" />
             <div>
-              <h3 className="text-base sm:text-lg font-semibold text-black">List request</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-black">Selamat datang!</h3>
               <p className="text-sm text-gray-600 mt-1">Lihat dan kelola permintaan barang dan ruangan di sini.</p>
             </div>
           </div>
